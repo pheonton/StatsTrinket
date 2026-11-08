@@ -2,7 +2,7 @@
 
 ## create-release.sh
 
-This script automates the process of creating a new release for LifeTrinket.
+This script automates the process of creating a new release for StatsTrinket.
 
 ### Usage
 

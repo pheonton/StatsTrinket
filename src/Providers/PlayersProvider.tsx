@@ -48,7 +48,7 @@ const readStartingLifeTotal = (): number | null => {
 
 /**
  * Seat order is fixed by the link. Seat 0 is player1 of the pairing, and
- * LifeTrinket never reorders the seats.
+ * StatsTrinket never reorders the seats.
  *
  * The format follows the event, and the orientation follows the player. A
  * tracked game is a round of a Swiss tournament: it is not commander,

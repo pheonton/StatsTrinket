@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}=== LifeTrinket Release Script ===${NC}\n"
+echo -e "${BLUE}=== StatsTrinket Release Script ===${NC}\n"
 
 # Ensure we're on main
 CURRENT_BRANCH=$(git branch --show-current)
@@ -107,4 +107,4 @@ echo -e "${BLUE}GitHub Actions will now:${NC}"
 echo -e "  1. Update package.json to $NEW_VERSION"
 echo -e "  2. Create a GitHub Release"
 echo -e "${BLUE}(Cloudflare Pages deploys automatically on push to main.)${NC}"
-echo -e "${BLUE}Check progress at:${NC} https://github.com/pheonton/LifeTrinket/actions"
+echo -e "${BLUE}Check progress at:${NC} https://github.com/pheonton/StatsTrinket/actions"

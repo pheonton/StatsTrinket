@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'logo192.png', 'logo512.png', 'robots.txt', 'sitemap.xml', 'humans.txt', 'browserconfig.xml'],
       manifest: {
-        name: 'Life Trinket - MTG Life Counter',
-        short_name: 'Life Trinket',
+        name: 'Stats Trinket - MTG Life Counter',
+        short_name: 'Stats Trinket',
         description: 'Free offline MTG life counter PWA for up to 6 players. Track life totals, commander damage, poison, energy counters. Share games via QR code.',
         theme_color: '#000000',
         background_color: '#ffffff',

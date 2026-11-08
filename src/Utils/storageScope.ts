@@ -1,7 +1,7 @@
 /**
  * How long each persisted key is allowed to live.
  *
- * LifeTrinket keeps everything in one flat localStorage namespace, but the
+ * StatsTrinket keeps everything in one flat localStorage namespace, but the
  * keys are not all the same kind of thing. Some describe one game and are a
  * lie the moment the next one starts; others describe the device and are
  * meant to be found again years later. Nothing used to say which was which,
@@ -9,7 +9,7 @@
  * forgotten for the tracked game's start time, for the match score, for the
  * life transcript and for the timer, each in turn.
  *
- * This module is the one place that says it. Every key LifeTrinket persists
+ * This module is the one place that says it. Every key StatsTrinket persists
  * appears in exactly one of the lists below, and `PersistedKey` is checked
  * against them at compile time, so a new key cannot be added without being
  * classified. Callers ask this module what to clear rather than listing keys
@@ -78,7 +78,7 @@ export const TRACKING_KEYS = [
 ] as const;
 
 /**
- * Every key LifeTrinket persists.
+ * Every key StatsTrinket persists.
  *
  * Add a key here and the assertion below fails until it also appears in one
  * of the four lists -- which is the point: the compiler asks the question

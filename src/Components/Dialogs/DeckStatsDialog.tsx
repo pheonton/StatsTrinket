@@ -56,7 +56,7 @@ export const DeckStatsDialog: React.FC<{
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `lifetrinket-deck-stats-${todayStamp()}.csv`;
+    link.download = `stats-trinket-deck-stats-${todayStamp()}.csv`;
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };

@@ -23,7 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-Life Trinket is a Magic the Gathering life counter PWA built with React 19, TypeScript, and Tailwind CSS v4. The application follows an offline-first architecture with localStorage as the primary persistence layer.
+Stats Trinket (statstrinket.com, a fork of Vikeo/LifeTrinket developed independently; repo `pheonton/StatsTrinket`) is a Magic the Gathering life counter PWA built with React 19, TypeScript, and Tailwind CSS v4. The application follows an offline-first architecture with localStorage as the primary persistence layer.
 
 ### Core Stack
 - **React 19.2.0** with functional components and hooks
@@ -159,7 +159,7 @@ The Health component uses ResizeObserver to dynamically calculate font sizes bas
 App
 ├── PlayersProvider
 │   └── GlobalSettingsProvider
-│       └── LifeTrinket (main router)
+│       └── StatsTrinket (main router)
 │           ├── StartMenu (setup and configuration)
 │           │   ├── InfoDialog
 │           │   ├── SettingsDialog
@@ -457,7 +457,7 @@ Cloudflare Pages either way, the two are unrelated. See
 
 The app checks for updates via GitHub API:
 - Installed version from `package.json` via `import.meta.env.VITE_APP_VERSION`
-- Remote version fetched from the latest GitHub Release of `pheonton/LifeTrinket` (see `checkForNewVersion` in `src/Providers/GlobalSettingsProvider.tsx`); if there is no release, the app treats itself as current
+- Remote version fetched from the latest GitHub Release of `pheonton/StatsTrinket` (see `checkForNewVersion` in `src/Providers/GlobalSettingsProvider.tsx`); if there is no release, the app treats itself as current
 - Comparison uses `semver` library
 - Update notification shown in UI if newer version available
 

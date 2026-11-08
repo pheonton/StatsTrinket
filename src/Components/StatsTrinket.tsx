@@ -23,7 +23,7 @@ const EmergencyResetButton = () => {
   );
 };
 
-export const LifeTrinket = () => {
+export const StatsTrinket = () => {
   const { showPlay, initialGameSettings } = useGlobalSettings();
 
   return (

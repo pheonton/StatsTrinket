@@ -1,6 +1,6 @@
 {
-  "short_name": "Life Trinket",
-  "name": "Life Trinket - MTG Life Counter & Commander Damage Tracker",
+  "short_name": "Stats Trinket",
+  "name": "Stats Trinket - MTG Life Counter & Commander Damage Tracker",
   "description": "Free offline MTG life counter PWA for up to 6 players. Track life totals, commander damage, partner damage, poison, energy, and experience counters. Share games via QR code. Perfect for Commander/EDH games.",
   "icons": [
     {

@@ -9,10 +9,8 @@ import { UserActionInstrumentation } from '@grafana/faro-web-sdk';
 // List of allowed origins for telemetry
 // Only metrics from these domains will be sent to Grafana
 const ALLOWED_ORIGINS = [
-  'https://lifetrinket.com',
-  'https://www.lifetrinket.com',
-  'https://life-trinket.web.app',
-  'https://life-trinket.firebaseapp.com',
+  'https://statstrinket.com',
+  'https://www.statstrinket.com',
 ];
 
 // Initialize Grafana Faro for frontend observability
@@ -30,7 +28,7 @@ const initializeTelemetry = () => {
   // Check if we have Faro configuration
   const faroUrl = import.meta.env.VITE_GRAFANA_FARO_URL;
   const faroAppName =
-    import.meta.env.VITE_GRAFANA_FARO_APP_NAME || 'LifeTrinket';
+    import.meta.env.VITE_GRAFANA_FARO_APP_NAME || 'StatsTrinket';
 
   // If no configuration, log to console instead (development mode)
   if (!faroUrl) {

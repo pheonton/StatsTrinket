@@ -1,4 +1,3 @@
-import { useAnalytics } from '../../Hooks/useAnalytics';
 import {
   CommanderTax,
   Energy,
@@ -7,7 +6,6 @@ import {
   PartnerTax,
   Poison,
 } from '../../Icons/generated';
-import { BuyMeCoffee } from '../../Icons/generated/Support';
 import { Separator } from '../Misc/Separator';
 import { Paragraph } from '../Misc/TextComponents';
 import { Dialog } from './Dialog';
@@ -17,7 +15,6 @@ export const InfoDialog = ({
 }: {
   dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 }) => {
-  const analytics = useAnalytics();
   return (
     <Dialog id="info" title="Info" dialogRef={dialogRef}>
       <div className=" text-text-primary">
@@ -33,7 +30,17 @@ export const InfoDialog = ({
               >
                 Vikeo
               </a>
-              : Creator
+              : Creator of the original Life Trinket
+            </div>
+            <div>
+              <a
+                href="https://github.com/pheonton"
+                target="_blank"
+                className="text-text-secondary underline"
+              >
+                pheonton
+              </a>
+              : Stats Trinket
             </div>
             <div>
               <a href="#" className="text-text-secondary underline">
@@ -46,7 +53,7 @@ export const InfoDialog = ({
         <div className="mt-2 text-text-primary">
           Visit the{' '}
           <a
-            href="https://github.com/Vikeo/LifeTrinket"
+            href="https://github.com/pheonton/StatsTrinket"
             target="_blank"
             className="text-text-secondary underline"
           >
@@ -135,7 +142,7 @@ export const InfoDialog = ({
 
           <h3 className="text-lg font-bold mb-2">Acknowledgements </h3>
           <Paragraph>
-            LifeTrinket is unofficial Fan Content permitted under the{' '}
+            Stats Trinket is unofficial Fan Content permitted under the{' '}
             <a
               href="https://company.wizards.com/en/legal/fancontentpolicy"
               className="text-text-secondary underline"
@@ -161,20 +168,6 @@ export const InfoDialog = ({
             picker.
           </Paragraph>
         </div>
-      </div>
-
-      <div className="flex justify-center mt-4">
-        <a
-          className="flex flex-row items-center self-center border-none cursor-pointer bg-primary-main rounded-md mx-4 pr-4 pl-3 py-2 transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
-          onClick={() => {
-            analytics.trackEvent('click_bmc');
-          }}
-          href="https://www.buymeacoffee.com/vikeo"
-          target="_blank"
-        >
-          <BuyMeCoffee height="1.5rem" width="1.5rem" className="mr-2" />
-          <Paragraph className="text-xs">Buy me a tea</Paragraph>
-        </a>
       </div>
     </Dialog>
   );

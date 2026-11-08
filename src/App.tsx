@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { LifeTrinket } from './Components/LifeTrinket';
+import { StatsTrinket } from './Components/StatsTrinket';
 import { GlobalSettingsProvider } from './Providers/GlobalSettingsProvider';
 import { PlayersProvider } from './Providers/PlayersProvider';
 import {
@@ -69,7 +69,7 @@ const App = ({
         sharedState={sharedState}
         newTrackLink={trackEntry?.isNew ? trackEntry.link : null}
       >
-        <LifeTrinket />
+        <StatsTrinket />
       </PlayersProvider>
     </GlobalSettingsProvider>
   );

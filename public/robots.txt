@@ -1,5 +1,5 @@
 # https://www.robotstxt.org/robotstxt.html
-# Life Trinket - MTG Life Counter
+# Stats Trinket - MTG Life Counter
 
 # Allow all crawlers
 User-agent: *
@@ -25,4 +25,4 @@ User-agent: Claude-Web
 Allow: /
 
 # Sitemap
-Sitemap: https://life-trinket.web.app/sitemap.xml
+Sitemap: https://statstrinket.com/sitemap.xml

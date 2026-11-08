@@ -7,7 +7,6 @@ import { useUserActions } from '../../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { Cog, Info, Trinket } from '../../../Icons/generated';
-import { BuyMeCoffee } from '../../../Icons/generated/Support';
 import {
   InitialGameSettings,
   Orientation,
@@ -299,23 +298,12 @@ const Start = () => {
               <line x1="6" y1="20" x2="6" y2="16" />
             </svg>
           </button>
-          <a href="https://lifetrinket.com/">
+          <a href="https://statstrinket.com/">
             <Trinket className="absolute w-12 h-12 top-4 right-4" />
           </a>
 
           <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
-            <a
-              href="https://www.buymeacoffee.com/vikeo"
-              target="_blank"
-              onClick={() => analytics.trackEvent('click_bmc_start')}
-              className="absolute -top-3.5 flex items-center gap-0.5 opacity-40 hover:opacity-80 transition-opacity font-normal text-[10px] leading-none"
-            >
-              <BuyMeCoffee height="0.65rem" width="0.65rem" />
-              <span className="text-[10px] text-text-secondary underline">
-                Tip tea pot
-              </span>
-            </a>
-            <div className="flex flex-row items-center">Life Trinket</div>
+            <div className="flex flex-row items-center">Stats Trinket</div>
             <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
             <div className="flex absolute text-xs font-medium -bottom-4">
               v{version.installedVersion}

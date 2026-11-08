@@ -1,4 +1,4 @@
-# Life Trinket - Feature TODO
+# Stats Trinket - Feature TODO
 
 **Status:** 3/15 features implemented (20%) • Based on 2024-2025 user research
 

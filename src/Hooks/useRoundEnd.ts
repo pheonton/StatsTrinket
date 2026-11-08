@@ -6,7 +6,7 @@ import { getTrackDatabase } from '../Utils/tracking/trackDb';
  * When the tournament's round ends, read from `/rounds/$roundId`.
  *
  * Spec 19. EventTrinket owns the clock and writes one node per session; this
- * is the only place LifeTrinket reads it. The direction is reversed from
+ * is the only place StatsTrinket reads it. The direction is reversed from
  * every other part of tracking: this hook never writes.
  *
  * The governing constraint, above everything else: tracking must never

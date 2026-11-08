@@ -1,22 +1,23 @@
-# Life Trinket - Free MTG Life Counter & Commander Damage Tracker
+# Stats Trinket - Free MTG Life Counter & Commander Damage Tracker
 
-[![PWA](https://img.shields.io/badge/PWA-Enabled-blue)](https://life-trinket.web.app/)
+[![PWA](https://img.shields.io/badge/PWA-Enabled-blue)](https://statstrinket.com/)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-green.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 
-![Life Trinket - a four-player Commander game with commander art backgrounds, per-deck names and commander-damage tracking](public/screenshot.png)
+![Stats Trinket - a four-player Commander game with commander art backgrounds, per-deck names and commander-damage tracking](public/screenshot.png)
 
-> **Fork notice:** This is a fork of [Vikeo/LifeTrinket](https://github.com/Vikeo/LifeTrinket).
-> It is deployed on **Cloudflare Pages** instead of Firebase Hosting, and ships
-> with no third-party analytics. See the original project for the canonical
-> hosted app at [life-trinket.web.app](https://life-trinket.web.app/).
+> **Based on Life Trinket:** Stats Trinket is a fork of
+> [Vikeo/LifeTrinket](https://github.com/Vikeo/LifeTrinket) by Viktor Raadberg,
+> developed independently. It adds per-deck statistics and commander art, is
+> hosted on **Cloudflare Pages** at [statstrinket.com](https://statstrinket.com/),
+> and ships with no third-party analytics.
 
 A **free, offline-capable PWA life counter** for **Magic: The Gathering** built with **React 19** and **TypeScript**. Perfect for **Commander/EDH** games with comprehensive tracking for life totals, commander damage, poison counters, energy, and experience. **Share game states instantly via QR code** with other players.
 
-## Why Life Trinket?
+## Why Stats Trinket?
 
-Created for the Commander/EDH community because existing life counters lacked essential features for multiplayer Magic games. Life Trinket is a **lightweight, privacy-focused web app** that does what you need without bloat.
+Created for the Commander/EDH community because existing life counters lacked essential features for multiplayer Magic games. Stats Trinket is a **lightweight, privacy-focused web app** that does what you need without bloat.
 
 ✅ **No accounts required**
 ✅ **No advertisements**
@@ -97,13 +98,13 @@ There are some controls that you might now know about, so here's a short list of
 ### As a Progressive Web App (Recommended)
 
 **iOS (Safari)**:
-1. Open [life-trinket.web.app](https://life-trinket.web.app/) in Safari
+1. Open [statstrinket.com](https://statstrinket.com/) in Safari
 2. Tap the Share button
 3. Scroll down and tap "Add to Home Screen"
 4. Tap "Add"
 
 **Android (Chrome)**:
-1. Open [life-trinket.web.app](https://life-trinket.web.app/) in Chrome
+1. Open [statstrinket.com](https://statstrinket.com/) in Chrome
 2. Tap the menu (three dots)
 3. Tap "Install app" or "Add to Home Screen"
 
@@ -111,8 +112,8 @@ There are some controls that you might now know about, so here's a short list of
 
 ```bash
 # Clone the repository
-git clone https://github.com/pheonton/LifeTrinket.git
-cd LifeTrinket
+git clone https://github.com/pheonton/StatsTrinket.git
+cd StatsTrinket
 
 # Install dependencies (requires pnpm)
 pnpm install
@@ -147,8 +148,8 @@ Netlify if you prefer it.
 
 ## 🤝 Contributing
 
-This is a personal fork. For contributions to the upstream project, see
-[Vikeo/LifeTrinket](https://github.com/Vikeo/LifeTrinket/issues).
+This is a personal fork, developed independently of the original
+[Vikeo/LifeTrinket](https://github.com/Vikeo/LifeTrinket).
 
 ## 📄 License
 
@@ -169,4 +170,4 @@ MTG life counter, Magic the Gathering life tracker, Commander life counter, EDH 
 
 ---
 
-Made with ❤️ for the Magic: The Gathering community by [Viktor Raadberg](https://github.com/Vikeo)
+Made with ❤️ for the Magic: The Gathering community by [pheonton](https://github.com/pheonton), based on [Life Trinket](https://github.com/Vikeo/LifeTrinket) by [Viktor Raadberg](https://github.com/Vikeo)

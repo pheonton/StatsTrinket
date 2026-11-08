@@ -1,7 +1,7 @@
 /* TEAM */
-Developer: Viktor Raadberg
-Site: https://life-trinket.web.app/
-Location: Sweden
+Maintainer: pheonton
+Original creator: Viktor Raadberg (Life Trinket)
+Site: https://statstrinket.com/
 
 /* THANKS */
 Magic: The Gathering players everywhere

@@ -18,7 +18,7 @@ const ToggleContainer = twc.div`flex flex-row justify-between items-center -mb-1
 const Description = twc.p`mr-16 text-xs text-left text-text-secondary mt-1`;
 
 const baseGithubReleasesUrl =
-  'https://github.com/Vikeo/LifeTrinket/releases/tag/';
+  'https://github.com/pheonton/StatsTrinket/releases/tag/';
 
 export const SettingsDialog = ({
   dialogRef,

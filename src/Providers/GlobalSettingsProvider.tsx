@@ -374,7 +374,7 @@ export const GlobalSettingsProvider = ({
         }
 
         const result = await fetch(
-          'https://api.github.com/repos/pheonton/LifeTrinket/releases/latest',
+          'https://api.github.com/repos/pheonton/StatsTrinket/releases/latest',
           { headers }
         );
         const data = await result.json();
