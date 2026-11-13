@@ -7,7 +7,7 @@ import { useUserActions } from '../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { recentDifferenceTTL } from '../../Data/constants';
-import { Cog } from '../../Icons/generated';
+import { Cog, Trophy } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import {
   RotationButtonProps,
@@ -33,12 +33,10 @@ type MatchScoreBadgeProps = RotationDivProps & {
 };
 
 const MatchScoreBadge = twc.div<MatchScoreBadgeProps>((props) => [
-  'absolute flex items-center justify-center',
-  'bg-black/70 backdrop-blur-sm',
-  'rounded-full',
-  'w-[5vmin] h-[5vmin]',
-  'text-white font-bold',
-  'text-[3vmin]',
+  'absolute',
+  'w-[8vmin] h-[8vmin]',
+  'font-bold',
+  'text-[3vmin] leading-none tabular-nums',
   'z-[1]',
   'pointer-events-none',
   'select-none webkit-user-select-none',
@@ -403,7 +401,20 @@ const LifeCounter = ({
                   : '0deg',
             }}
           >
-            {matchScore}
+            {/* Same treatment as the cog: light or dark by card colour, 50%. */}
+            <Trophy
+              size="100%"
+              data-contrast={displayPlayer.iconTheme}
+              className="absolute inset-0 opacity-50 data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+            />
+            {/* Spans the trophy's cup (y 64-300 of its 512 viewBox), in the
+                opposite tone so it reads against the cup. */}
+            <span
+              data-contrast={displayPlayer.iconTheme}
+              className="absolute inset-x-0 top-[12.5%] h-[46%] flex items-center justify-center data-[contrast=dark]:text-icons-light data-[contrast=light]:text-icons-dark"
+            >
+              {matchScore}
+            </span>
           </MatchScoreBadge>
         )}
         {settings.showPlayerMenuCog && (
