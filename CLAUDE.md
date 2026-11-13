@@ -134,7 +134,7 @@ The `savedGame` mechanism allows users to pause and resume games. When saving, i
 ## Layout System
 
 ### Dynamic Grid Layouts
-The application supports 1-6 players with automatic layout adjustment. All layouts are defined in `tailwind.config.ts` as `twGridTemplateAreas` with 15 predefined configurations for different player counts and orientations (portrait/landscape).
+The application supports 1-6 players with automatic layout adjustment. All layouts are defined as `.grid-areas-*` classes in `src/index.css` (names listed in the `GridLayout` type in `Play.tsx`), with 13 predefined configurations for different player counts and orientations (portrait/landscape).
 
 ### Player Card Rotation
 Player cards are rotated based on their position to face each player around a table:
@@ -480,7 +480,7 @@ Manifest configuration in `index.html` includes theme colors, icons, and display
 4. Ensure validation fallback behavior is sensible
 
 ### When Modifying Layouts
-1. Update `twGridTemplateAreas` in `tailwind.config.ts`
+1. Update the `.grid-areas-*` classes in `src/index.css` and the `GridLayout` type in `Play.tsx`
 2. Test all player counts (1-6) in both orientations
 3. Verify rotation calculations in `getInitialPlayers.ts`
 4. Ensure font sizing remains legible

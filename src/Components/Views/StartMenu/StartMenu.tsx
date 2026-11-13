@@ -14,7 +14,6 @@ import {
   defaultInitialGameSettings,
 } from '../../../Types/Settings';
 
-import { baseColors } from '../../../../tailwind.config';
 import { InfoDialog } from '../../Dialogs/InfoDialog';
 import { SettingsDialog } from '../../Dialogs/SettingsDialog';
 import { DeckStatsDialog } from '../../Dialogs/DeckStatsDialog';
@@ -121,7 +120,7 @@ const Start = () => {
         break;
     }
 
-    playersSliderRef.current.style.background = `linear-gradient(to right, ${baseColors.secondary.main} ${progress}%, ${baseColors.secondary.dark} ${progress}%)`;
+    playersSliderRef.current.style.background = `linear-gradient(to right, var(--color-secondary-main) ${progress}%, var(--color-secondary-dark) ${progress}%)`;
   }, [playerOptions?.numberOfPlayers]);
 
   useEffect(() => {
@@ -150,7 +149,7 @@ const Start = () => {
         break;
     }
 
-    healthSliderRef.current.style.background = `linear-gradient(to right, ${baseColors.secondary.main} ${progress}%, ${baseColors.secondary.dark} ${progress}%)`;
+    healthSliderRef.current.style.background = `linear-gradient(to right, var(--color-secondary-main) ${progress}%, var(--color-secondary-dark) ${progress}%)`;
   }, [playerOptions?.startingLifeTotal]);
 
   useEffect(() => {

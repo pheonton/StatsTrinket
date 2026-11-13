@@ -2,7 +2,6 @@ import { Rotation } from '../../Types/Player';
 
 import { twc } from 'react-twc';
 //TODO Create provider for this
-import { baseColors } from './../../../tailwind.config';
 
 const Container = twc.div`
   flex
@@ -56,12 +55,12 @@ export const OutlinedText: React.FC<OutlinedTextProps> = ({
           fontSize,
           fontWeight,
           strokeWidth: strokeWidth || '1vmin',
-          color: fillColor || baseColors.common.black,
+          color: fillColor || 'var(--color-common-black)',
           WebkitTextStroke: `${strokeWidth || '1vmin'} ${
-            strokeColor || baseColors.common.white
+            strokeColor || 'var(--color-common-white)'
           }`,
           WebkitTextFillColor:
-            fillColor || baseColors.common.black,
+            fillColor || 'var(--color-common-black)',
           rotate: `${calcRotation}deg`,
         }}
       >

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { twc } from 'react-twc';
-import { twGridTemplateAreas } from '../../../tailwind.config';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Orientation, PreStartMode } from '../../Types/Settings';
@@ -13,9 +12,21 @@ import { TrackingContext } from '../../Contexts/TrackingContext';
 
 const MainWrapper = twc.div`relative w-[100dvmax] h-[100dvmin] overflow-hidden, setPlayers`;
 
-type GridTemplateAreasKeys = keyof typeof twGridTemplateAreas;
-
-export type GridLayout = `grid-areas-${GridTemplateAreasKeys}`;
+// Each name is a `.grid-areas-*` class defined in src/index.css.
+export type GridLayout =
+  | 'grid-areas-onePlayerLandscape'
+  | 'grid-areas-onePlayerPortrait'
+  | 'grid-areas-twoPlayersOppositeLandscape'
+  | 'grid-areas-twoPlayersOppositePortrait'
+  | 'grid-areas-twoPlayersSameSideLandscape'
+  | 'grid-areas-threePlayers'
+  | 'grid-areas-threePlayersSide'
+  | 'grid-areas-fourPlayerPortrait'
+  | 'grid-areas-fourPlayer'
+  | 'grid-areas-fivePlayers'
+  | 'grid-areas-fivePlayersSide'
+  | 'grid-areas-sixPlayers'
+  | 'grid-areas-sixPlayersSide';
 
 export const Play = () => {
   const {
