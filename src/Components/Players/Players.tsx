@@ -28,7 +28,13 @@ const getGridArea = (player: PlayerType) => {
 
 const PlayersWrapper = twc.div`w-full h-full bg-black`;
 
-export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
+export const Players = ({
+  gridLayout,
+  finishGame,
+}: {
+  gridLayout: GridLayout;
+  finishGame?: { playerIndex: number; onFinish: () => void };
+}) => {
   const { players } = usePlayers();
 
   const { playing, settings, preStartCompleted, gameScore } = useGlobalSettings();
@@ -51,6 +57,11 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
                 matchScore={
                   settings.showMatchScore
                     ? gameScore[player.index]
+                    : undefined
+                }
+                onFinishGame={
+                  finishGame?.playerIndex === player.index
+                    ? finishGame.onFinish
                     : undefined
                 }
               />

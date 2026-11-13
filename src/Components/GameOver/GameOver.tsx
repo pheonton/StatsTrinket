@@ -40,10 +40,6 @@ const SaveRow = twc.div`
   text-[3.5vmin] text-text-primary
 `;
 
-const SaveHint = twc.p`
-  -mt-5 text-[2.8vmin] text-text-secondary
-`;
-
 const PrimaryButton = twc.button`
   py-[2vmin] px-[3vmin] rounded-xl
   text-[4vmin] font-semibold
@@ -70,19 +66,17 @@ type GameOverProps = {
   winner: Player;
   // False when no seat has a deck name: there would be nothing to save.
   canSave: boolean;
-  alreadySaved: boolean;
   onStartNextGame: (save: boolean) => void;
-  onStay: (save: boolean) => void;
+  onBackToGame: () => void;
 };
 
 export const GameOver = ({
   winner,
   canSave,
-  alreadySaved,
   onStartNextGame,
-  onStay,
+  onBackToGame,
 }: GameOverProps) => {
-  const [save, setSave] = useState(!alreadySaved);
+  const [save, setSave] = useState(true);
   const shouldSave = canSave && save;
 
   return (
@@ -93,27 +87,19 @@ export const GameOver = ({
           {winner.name || `Player ${winner.index + 1}`}
         </WinnerName>
         {canSave && (
-          <>
-            <SaveRow>
-              <span>Save to deck stats</span>
-              <ToggleButton
-                checked={save}
-                onChange={() => setSave((prev) => !prev)}
-              />
-            </SaveRow>
-            {alreadySaved && (
-              <SaveHint>
-                This game was already saved. Only save again if it's a new
-                game.
-              </SaveHint>
-            )}
-          </>
+          <SaveRow>
+            <span>Save to deck stats</span>
+            <ToggleButton
+              checked={save}
+              onChange={() => setSave((prev) => !prev)}
+            />
+          </SaveRow>
         )}
         <ButtonContainer>
           <SecondaryButton onClick={() => onStartNextGame(shouldSave)}>
             Start Next Game
           </SecondaryButton>
-          <PrimaryButton onClick={() => onStay(shouldSave)}>Close</PrimaryButton>
+          <PrimaryButton onClick={onBackToGame}>Back to Game</PrimaryButton>
         </ButtonContainer>
       </Modal>
     </Overlay>

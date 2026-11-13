@@ -254,11 +254,13 @@ Cross-game statistics keyed by deck name, persisted in `localStorage` under
   players in this game picked), most-recently-played first, and saves on close.
   The name lives on `Player.deckName` and persists across games within a match.
 - **Recording**: `<GameOver>` shows a "Save to deck stats" toggle (only when
-  some seat has a deck name); `Play.tsx` calls `recordGame(players, winnerIndex)`
-  from either exit handler only if it's on. "Close" hands the finished game back
-  to the table, so it can end again: `Play` remembers the `gameResetCount`
-  (bumped by `PlayersProvider.resetCurrentGame`) it last saved under, and the
-  toggle defaults to off with a hint when the same game ends a second time.
+  some seat has a deck name); "Start Next Game" calls
+  `recordGame(players, winnerIndex)` if it's on, and is the only place a win
+  (deck stats or match score) is counted. "Back to Game" counts nothing and
+  keeps defeated players out; `Play` remembers that winner as dismissed until
+  the number of players still in changes, so the end screen doesn't reopen at
+  once; meanwhile a gold trophy (`FinishGameButton`, in the skull's spot) on the
+  winner's card reopens it.
   Game-over detection only runs when `settings.showMatchScore` is on and there
   are ≥2 players. Games abandoned via reset / back-to-start are not recorded.
 - **Aggregation**: `recordGameToDeckStats` in `src/Types/DeckStats.ts` is a pure

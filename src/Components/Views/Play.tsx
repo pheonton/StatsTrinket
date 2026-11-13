@@ -33,7 +33,6 @@ export const Play = () => {
     players,
     setPlayers,
     resetCurrentGame,
-    gameResetCount,
     setStartingPlayerIndex,
   } = usePlayers();
   const {
@@ -47,20 +46,11 @@ export const Play = () => {
     trackedGameId,
   } = useGlobalSettings();
   const [winner, setWinner] = useState<number | null>(null);
-  // "Close" on the end screen hands the finished game back to the players, so
-  // it can end - and be offered for saving - again. Remember which game was
-  // saved so the end screen doesn't default to saving it twice.
-  const [savedGameResetCount, setSavedGameResetCount] = useState<
-    number | null
-  >(null);
-  const alreadySaved = savedGameResetCount === gameResetCount;
+  // Set by "Back to Game": the end screen stays closed for this winner until
+  // the table changes (someone is brought back), so it doesn't reopen at once.
+  // Meanwhile the winner's card shows a trophy that reopens it.
+  const [dismissedWinner, setDismissedWinner] = useState<number | null>(null);
   const hasDeckNames = players.some((p) => p.deckName.trim() !== '');
-
-  const saveGameIfChosen = (save: boolean) => {
-    if (winner === null || !save) return;
-    recordGame(players, winner);
-    setSavedGameResetCount(gameResetCount);
-  };
 
   // Idle and inert unless a track link started this game.
   const tracker = useGameTracker({
@@ -161,16 +151,21 @@ export const Play = () => {
 
     const activePlayers = players.filter((p) => !p.hasLost);
 
+    if (activePlayers.length !== 1) {
+      if (dismissedWinner !== null) setDismissedWinner(null);
+      return;
+    }
+
     // If only one player is alive, they are the winner
-    if (activePlayers.length === 1) {
+    if (activePlayers[0].index !== dismissedWinner) {
       setWinner(activePlayers[0].index);
     }
-  }, [players, winner, settings.showMatchScore]);
+  }, [players, winner, dismissedWinner, settings.showMatchScore]);
 
   const handleStartNextGame = (save: boolean) => {
     if (winner === null) return;
 
-    saveGameIfChosen(save);
+    if (save) recordGame(players, winner);
 
     // Update score
     const newScore = { ...gameScore };
@@ -186,25 +181,10 @@ export const Play = () => {
     setWinner(null);
   };
 
-  const handleStay = (save: boolean) => {
-    if (winner === null) return;
-
-    saveGameIfChosen(save);
-
-    // Update score
-    const newScore = { ...gameScore };
-    newScore[winner] = (newScore[winner] || 0) + 1;
-    setGameScore(newScore);
-
-    // Reset hasLost state for all players
-    setPlayers(
-      players.map((p) => ({
-        ...p,
-        hasLost: false,
-      }))
-    );
-
-    // Clear winner to allow new game over detection
+  // Nothing is counted: no win, no deck stats, and the defeated players stay
+  // out. Bringing one back from their player menu reopens the question.
+  const handleBackToGame = () => {
+    setDismissedWinner(winner);
     setWinner(null);
   };
 
@@ -226,7 +206,20 @@ export const Play = () => {
           forceUpdate: tracker.forceUpdate,
         }}
       >
-        <Players gridLayout={gridLayout} />
+        <Players
+          gridLayout={gridLayout}
+          finishGame={
+            dismissedWinner === null
+              ? undefined
+              : {
+                  playerIndex: dismissedWinner,
+                  onFinish: () => {
+                    setWinner(dismissedWinner);
+                    setDismissedWinner(null);
+                  },
+                }
+          }
+        />
       </TrackingContext.Provider>
 
       {/* Mounted whatever `showTimer` says: a tracked round end overrides
@@ -238,9 +231,8 @@ export const Play = () => {
         <GameOver
           winner={players[winner]}
           canSave={hasDeckNames}
-          alreadySaved={alreadySaved}
           onStartNextGame={handleStartNextGame}
-          onStay={handleStay}
+          onBackToGame={handleBackToGame}
         />
       )}
     </MainWrapper>

@@ -13,7 +13,7 @@ import {
   RotationButtonProps,
   RotationDivProps,
 } from '../Buttons/CommanderDamage';
-import { LoseGameButton } from '../Buttons/LoseButton';
+import { FinishGameButton, LoseGameButton } from '../Buttons/LoseButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../Players/PlayerMenu';
@@ -124,9 +124,15 @@ type LifeCounterProps = {
   opponents: Player[];
   isStartingPlayer?: boolean;
   matchScore?: number;
+  onFinishGame?: () => void;
 };
 
-const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
+const LifeCounter = ({
+  player,
+  opponents,
+  matchScore,
+  onFinishGame,
+}: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
   const { settings, playing, addLifeHistoryEvent } = useGlobalSettings();
 
@@ -412,11 +418,19 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
             iconTheme={displayPlayer.iconTheme}
           />
         )}
-        {playerCanLose(player) && !player.hasLost && (
-          <LoseGameButton
+        {onFinishGame ? (
+          <FinishGameButton
             rotation={player.settings.rotation}
-            onClick={toggleGameLost}
+            onClick={onFinishGame}
           />
+        ) : (
+          playerCanLose(player) &&
+          !player.hasLost && (
+            <LoseGameButton
+              rotation={player.settings.rotation}
+              onClick={toggleGameLost}
+            />
+          )
         )}
         <Health
           player={displayPlayer}
