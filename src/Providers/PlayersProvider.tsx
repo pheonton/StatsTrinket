@@ -151,7 +151,6 @@ export const PlayersProvider = ({
       const updatedPlayer = {
         ...player,
         lifeTotal: updatedLifeTotal,
-        hasLost: false,
       };
       updatePlayer(updatedPlayer);
 

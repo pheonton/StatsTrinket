@@ -33,7 +33,7 @@ export const LoseGameButton = ({ rotation, onClick }: LoseButtonProps) => {
       aria-label={`Lose Game`}
       style={{ rotate: `${calcRotation}deg` }}
     >
-      <Skull size="8vmin" color="black" opacity={0.5} />
+      <Skull size="8vmin" className="text-red-500 motion-safe:animate-wiggleBurst" />
     </LoseButton>
   );
 };

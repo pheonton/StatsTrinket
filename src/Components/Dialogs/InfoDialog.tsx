@@ -128,8 +128,10 @@ export const InfoDialog = ({
                 When a player is <strong>at or below 0 life</strong>, has taken{' '}
                 <strong>21 or more Commander Damage</strong> or has{' '}
                 <strong>10 or more poison counters</strong>, a button with a
-                skull will appear on that player's card. Tapping it will dim the
-                player's card.
+                skull will appear on that player's card. Tapping it puts the
+                player out of the game: their card dims and ignores taps,
+                except for the cog. To bring them back, tap the red skull in
+                their player menu.
               </Paragraph>
             </li>
             <li>

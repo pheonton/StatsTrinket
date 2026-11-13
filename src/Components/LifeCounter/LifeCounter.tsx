@@ -22,7 +22,7 @@ import Health from './Health';
 import { useCommanderArt } from '../../Hooks/useCommanderArt';
 
 const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
-  'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none opacity-50',
+  'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[2] select-none  webkit-user-select-none opacity-50',
   props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
     ? `right-auto top-[1vmax] left-[27%]`
     : 'top-1/4 right-[1vmax]',
@@ -86,7 +86,7 @@ const LifeCounterWrapper = twc.div<RotationDivProps>((props) => [
 ]);
 
 const PlayerLostWrapper = twc.div<RotationDivProps>((props) => [
-  'z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-lifeCounter-lostWrapper opacity-75',
+  'z-[2] flex absolute w-full h-full justify-center items-center select-none webkit-user-select-none bg-lifeCounter-lostWrapper opacity-75',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? `rotate-[${props.$rotation - 90}deg]`
     : '',
@@ -374,6 +374,8 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
           !playing &&
           settings.showStartingPlayer &&
           player.isStartingPlayer && <StartingPlayerCard player={player} />}
+        {/* Blocks every tap on the card except the cog above it: once out, a
+            player only comes back through the skull in their player menu. */}
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
@@ -410,7 +412,7 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
             iconTheme={displayPlayer.iconTheme}
           />
         )}
-        {playerCanLose(player) && (
+        {playerCanLose(player) && !player.hasLost && (
           <LoseGameButton
             rotation={player.settings.rotation}
             onClick={toggleGameLost}

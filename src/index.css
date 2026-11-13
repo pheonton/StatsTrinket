@@ -26,6 +26,35 @@
   --line-height-xxs: 1rem;
 
   --breakpoint-modalSm: 548px;
+
+  --animate-wiggleBurst: wiggleBurst 2.5s ease-in-out 0.5s infinite;
+
+  /* A short shake-and-grow burst, then still for the rest of the cycle. */
+  @keyframes wiggleBurst {
+    0%,
+    30%,
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+    4% {
+      transform: rotate(-14deg) scale(1.15);
+    }
+    8% {
+      transform: rotate(12deg) scale(1.15);
+    }
+    12% {
+      transform: rotate(-10deg) scale(1.12);
+    }
+    16% {
+      transform: rotate(8deg) scale(1.08);
+    }
+    20% {
+      transform: rotate(-4deg) scale(1.04);
+    }
+    24% {
+      transform: rotate(2deg) scale(1);
+    }
+  }
 }
 
 html {

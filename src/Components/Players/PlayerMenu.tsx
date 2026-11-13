@@ -842,7 +842,11 @@ const PlayerMenu = ({
               }}
               className="text-red-500"
               onClick={() => {
-                if (totalPlayers === 2) {
+                if (player.hasLost) {
+                  // The only way back into the game for a player who is out.
+                  onForfeit?.();
+                  setShowPlayerMenu(false);
+                } else if (totalPlayers === 2) {
                   forfeitGameDialogRef.current?.show();
                 } else {
                   if (onForfeit) {
@@ -857,7 +861,7 @@ const PlayerMenu = ({
                   }
                 }
               }}
-              aria-label="Forfeit Game"
+              aria-label={player.hasLost ? 'Return to Game' : 'Forfeit Game'}
             >
               <Skull size={iconSize} />
             </button>
