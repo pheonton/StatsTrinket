@@ -44,6 +44,8 @@ export const Play = () => {
     setGameScore,
     recordGame,
     trackedGameId,
+    goToStart,
+    setRandomizingPlayer,
   } = useGlobalSettings();
   const [winner, setWinner] = useState<number | null>(null);
   // Set by "Back to Game": the end screen stays closed for this winner until
@@ -51,6 +53,11 @@ export const Play = () => {
   // Meanwhile the winner's card shows a trophy that reopens it.
   const [dismissedWinner, setDismissedWinner] = useState<number | null>(null);
   const hasDeckNames = players.some((p) => p.deckName.trim() !== '');
+  // Every finished game in this series added one win to the score.
+  const gamesFinished = Object.values(gameScore).reduce(
+    (sum, wins) => sum + wins,
+    0
+  );
 
   // Idle and inert unless a track link started this game.
   const tracker = useGameTracker({
@@ -181,6 +188,16 @@ export const Play = () => {
     setWinner(null);
   };
 
+  // Counts the finished game like "Start Next Game", then ends the series. No
+  // paused game is kept to resume: this one is over.
+  const handleLeaveGame = (save: boolean) => {
+    if (winner === null) return;
+    if (save) recordGame(players, winner);
+    setWinner(null);
+    goToStart();
+    setRandomizingPlayer(true);
+  };
+
   // Nothing is counted: no win, no deck stats, and the defeated players stay
   // out. Bringing one back from their player menu reopens the question.
   const handleBackToGame = () => {
@@ -231,8 +248,10 @@ export const Play = () => {
         <GameOver
           winner={players[winner]}
           canSave={hasDeckNames}
+          nextGameNumber={gamesFinished + 2}
           onStartNextGame={handleStartNextGame}
           onBackToGame={handleBackToGame}
+          onLeaveGame={handleLeaveGame}
         />
       )}
     </MainWrapper>

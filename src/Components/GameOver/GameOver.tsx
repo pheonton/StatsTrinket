@@ -62,19 +62,34 @@ const SecondaryButton = twc.button`
   shadow-lg shadow-secondary-main/50
 `;
 
+const LeaveButton = twc.button`
+  py-[2vmin] px-[3vmin] rounded-xl
+  text-[4vmin] font-semibold
+  bg-transparent
+  text-text-secondary
+  transition-all duration-200
+  hover:scale-105 active:scale-95
+  border-3 border-white/20
+`;
+
 type GameOverProps = {
   winner: Player;
   // False when no seat has a deck name: there would be nothing to save.
   canSave: boolean;
+  // The game in this series the "start" button begins, e.g. 2 after the first.
+  nextGameNumber: number;
   onStartNextGame: (save: boolean) => void;
   onBackToGame: () => void;
+  onLeaveGame: (save: boolean) => void;
 };
 
 export const GameOver = ({
   winner,
   canSave,
+  nextGameNumber,
   onStartNextGame,
   onBackToGame,
+  onLeaveGame,
 }: GameOverProps) => {
   const [save, setSave] = useState(true);
   const shouldSave = canSave && save;
@@ -97,9 +112,12 @@ export const GameOver = ({
         )}
         <ButtonContainer>
           <SecondaryButton onClick={() => onStartNextGame(shouldSave)}>
-            Start Next Game
+            Start Game {nextGameNumber}
           </SecondaryButton>
           <PrimaryButton onClick={onBackToGame}>Back to Game</PrimaryButton>
+          <LeaveButton onClick={() => onLeaveGame(shouldSave)}>
+            Leave Game
+          </LeaveButton>
         </ButtonContainer>
       </Modal>
     </Overlay>

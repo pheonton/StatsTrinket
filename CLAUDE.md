@@ -254,9 +254,11 @@ Cross-game statistics keyed by deck name, persisted in `localStorage` under
   players in this game picked), most-recently-played first, and saves on close.
   The name lives on `Player.deckName` and persists across games within a match.
 - **Recording**: `<GameOver>` shows a "Save to deck stats" toggle (only when
-  some seat has a deck name); "Start Next Game" calls
-  `recordGame(players, winnerIndex)` if it's on, and is the only place a win
-  (deck stats or match score) is counted. "Back to Game" counts nothing and
+  some seat has a deck name). "Start Game N" (N = finished games in the series
+  + 1, from the match score) and "Leave Game" call
+  `recordGame(players, winnerIndex)` if it's on, and are the only places a win
+  is counted; "Start Game N" also adds it to the match score, while "Leave Game"
+  goes back to the start menu without keeping a paused game. "Back to Game" counts nothing and
   keeps defeated players out; `Play` remembers that winner as dismissed until
   the number of players still in changes, so the end screen doesn't reopen at
   once; meanwhile a gold trophy (`FinishGameButton`, in the skull's spot) on the
