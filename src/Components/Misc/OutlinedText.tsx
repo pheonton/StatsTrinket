@@ -57,7 +57,8 @@ export const OutlinedText: React.FC<OutlinedTextProps> = ({
           strokeWidth: strokeWidth || '1vmin',
           color: fillColor || 'var(--color-common-black)',
           WebkitTextStroke: `${strokeWidth || '1vmin'} ${
-            strokeColor || 'var(--color-common-white)'
+            strokeColor ||
+            'color-mix(in srgb, var(--color-common-white) 60%, transparent)'
           }`,
           WebkitTextFillColor:
             fillColor || 'var(--color-common-black)',
