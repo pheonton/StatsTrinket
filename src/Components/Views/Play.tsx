@@ -51,7 +51,13 @@ export const Play = () => {
   // Set by "Back to Game": the end screen stays closed for this winner until
   // the table changes (someone is brought back), so it doesn't reopen at once.
   // Meanwhile the winner's card shows a trophy that reopens it.
-  const [dismissedWinner, setDismissedWinner] = useState<number | null>(null);
+  // A game that arrives already decided (resumed, or reloaded) starts in that
+  // same state rather than popping the end screen.
+  const [dismissedWinner, setDismissedWinner] = useState<number | null>(() => {
+    if (players.length < 2 || !settings.showMatchScore) return null;
+    const stillIn = players.filter((p) => !p.hasLost);
+    return stillIn.length === 1 ? stillIn[0].index : null;
+  });
   const hasDeckNames = players.some((p) => p.deckName.trim() !== '');
   // Every finished game in this series added one win to the score.
   const gamesFinished = Object.values(gameScore).reduce(
