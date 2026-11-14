@@ -68,11 +68,6 @@ export const GlobalSettingsProvider = ({
     localStorage.setItem('playing', String(playing));
   };
 
-  const savedPreStartComplete = localStorage.getItem('preStartComplete');
-  const [preStartCompleted, setPreStartCompleted] = useState<boolean>(
-    savedPreStartComplete ? savedPreStartComplete === 'true' : false
-  );
-
   const savedShowPlay = localStorage.getItem('showPlay');
   const [showPlay, setShowPlay] = useState<boolean>(() => {
     // Shared state and a track link both open the play view
@@ -87,11 +82,6 @@ export const GlobalSettingsProvider = ({
   };
 
   const savedSettings = localStorage.getItem('settings');
-  const [randomizingPlayer, setRandomizingPlayer] = useState<boolean>(() => {
-    if (!savedSettings) return true;
-    const parsed = JSON.parse(savedSettings);
-    return Boolean(parsed.preStartMode === 'random-king');
-  });
   const [settings, setSettings] = useState<Settings>(() => {
     if (!savedSettings) return defaultSettings;
     const parsed = settingsSchema.safeParse(JSON.parse(savedSettings));
@@ -308,7 +298,6 @@ export const GlobalSettingsProvider = ({
 
       setPlaying(false);
       setShowPlay(false);
-      setPreStartCompleted(false);
       setSettings({ ...settings, useMonarch: false });
       setGameScore({});
     };
@@ -353,11 +342,6 @@ export const GlobalSettingsProvider = ({
           setIsFullscreen(false);
         });
       }
-    };
-
-    const setPreStartCompletedAndLocalStorage = (preStartComplete: boolean) => {
-      setPreStartCompleted(preStartComplete);
-      localStorage.setItem('playing', String(playing));
     };
 
     async function checkForNewVersion(source: 'settings' | 'start_menu') {
@@ -434,11 +418,7 @@ export const GlobalSettingsProvider = ({
       setInitialGameSettings: setInitialGameSettingsAndLocalStorage,
       settings,
       setSettings: setSettingsAndLocalStorage,
-      randomizingPlayer,
-      setRandomizingPlayer,
       isPWA: window?.matchMedia('(display-mode: standalone)').matches,
-      preStartCompleted,
-      setPreStartCompleted: setPreStartCompletedAndLocalStorage,
       savedGame,
       saveCurrentGame: setCurrentGameAndLocalStorage,
       version: {
@@ -472,9 +452,6 @@ export const GlobalSettingsProvider = ({
     playing,
     initialGameSettings,
     settings,
-    randomizingPlayer,
-    setRandomizingPlayer,
-    preStartCompleted,
     savedGame,
     remoteVersion,
     isLatestVersion,

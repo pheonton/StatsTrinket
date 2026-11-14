@@ -10,7 +10,6 @@ import { Cog, Info, Trinket } from '../../../Icons/generated';
 import {
   InitialGameSettings,
   Orientation,
-  PreStartMode,
   defaultInitialGameSettings,
 } from '../../../Types/Settings';
 
@@ -62,7 +61,6 @@ const Start = () => {
     setInitialGameSettings,
     settings,
     isPWA,
-    setRandomizingPlayer,
     version,
     setPlaying,
     savedGame,
@@ -196,7 +194,6 @@ const Start = () => {
 
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
-    setRandomizingPlayer(settings.preStartMode === PreStartMode.RandomKing);
     setShowPlay(true);
     setPlaying(false);
     tracked = false;
@@ -234,7 +231,6 @@ const Start = () => {
       setGameScore(savedGame.gameScore);
     }
     saveCurrentGame(null);
-    setRandomizingPlayer(false);
     setShowPlay(true);
     setPlaying(true);
     tracked = false;

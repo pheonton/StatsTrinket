@@ -37,7 +37,7 @@ Stats Trinket (statstrinket.com, a fork of Vikeo/LifeTrinket developed independe
 
 ### Application Flow
 ```
-StartMenu → PreStart (optional mini-games) → Play → GameOver (optional) → repeat
+StartMenu → Play (random starting player shown on their card) → GameOver (optional) → repeat
 ```
 
 View routing is controlled by `showPlay` and `playing` flags in GlobalSettingsContext.
@@ -94,8 +94,7 @@ classified in `src/Utils/storageScope.ts`. Read that file before you add one.
 A key is one of four kinds, and the distinction is the point:
 
 - **Game scoped**, cleared when a new game starts: `players`, `gameScore`,
-  `lifeHistory`, `timerStartedAt`, `timerAccumulatedMs`, `startingPlayerIndex`,
-  `preStartComplete`.
+  `lifeHistory`, `timerStartedAt`, `timerAccumulatedMs`, `startingPlayerIndex`.
 - **Device scoped**, kept forever: `settings`, `initialGameSettings`.
 - **Session scoped** (view routing / parked games), not cleared by a new
   game: `playing`, `showPlay`, `savedGame`.
@@ -165,7 +164,6 @@ App
 │           │   ├── SettingsDialog
 │           │   └── LayoutOptions
 │           └── Play (active game view)
-│               ├── PreStart (optional randomizers/mini-games)
 │               ├── Players (grid container)
 │               │   └── LifeCounter (per player)
 │               │       ├── Health (life total + ±buttons)

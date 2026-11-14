@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
-import { Orientation, PreStartMode } from '../../Types/Settings';
+import { Orientation } from '../../Types/Settings';
 import { GameTimer } from '../GameTimer/GameTimer';
 import { Players } from '../Players/Players';
-import { PreStart } from '../PreStartGame/PreStart';
 import { GameOver } from '../GameOver/GameOver';
 import { useGameTracker } from '../../Hooks/useGameTracker';
 import { TrackingContext } from '../../Contexts/TrackingContext';
@@ -37,15 +36,12 @@ export const Play = () => {
   } = usePlayers();
   const {
     initialGameSettings,
-    playing,
     settings,
-    preStartCompleted,
     gameScore,
     setGameScore,
     recordGame,
     trackedGameId,
     goToStart,
-    setRandomizingPlayer,
   } = useGlobalSettings();
   const [winner, setWinner] = useState<number | null>(null);
   // Set by "Back to Game": the end screen stays closed for this winner until
@@ -134,10 +130,6 @@ export const Play = () => {
   }
 
   useEffect(() => {
-    if (settings.preStartMode !== PreStartMode.None) {
-      return;
-    }
-
     const randomIndex = Math.floor(Math.random() * players.length);
 
     setPlayers(
@@ -201,7 +193,6 @@ export const Play = () => {
     if (save) recordGame(players, winner);
     setWinner(null);
     goToStart();
-    setRandomizingPlayer(true);
   };
 
   // Nothing is counted: no win, no deck stats, and the defeated players stay
@@ -213,12 +204,6 @@ export const Play = () => {
 
   return (
     <MainWrapper>
-      {players.length > 1 &&
-        !preStartCompleted &&
-        settings.preStartMode !== PreStartMode.None &&
-        !playing &&
-        settings.showStartingPlayer && <PreStart />}
-
       {/* The player menu shows the tracking status, and it sits three
           components below this one. Context rather than three layers of
           props for a readout that most games never have. */}

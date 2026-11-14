@@ -27,7 +27,6 @@ import { Player, Rotation } from '../../Types/Player';
 import { normalizeDeckName } from '../../Types/DeckStats';
 import { useCommanderArt } from '../../Hooks/useCommanderArt';
 import { useDerivedColor } from '../../Hooks/useDerivedColor';
-import { PreStartMode } from '../../Types/Settings';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
 import { IconCheckbox } from '../Misc/IconCheckbox';
 import { checkContrast } from '../../Utils/checkContrast';
@@ -229,10 +228,8 @@ const PlayerMenu = ({
     settings,
     setSettings,
     setPlaying,
-    setRandomizingPlayer,
     saveCurrentGame,
     initialGameSettings,
-    setPreStartCompleted,
     gameScore,
     deckStats,
     clearTrackedGame,
@@ -273,11 +270,6 @@ const PlayerMenu = ({
 
     setPlaying(false);
 
-    if (settings.preStartMode === PreStartMode.RandomKing) {
-      setRandomizingPlayer(true);
-      setPreStartCompleted(false);
-    }
-
     analytics.trackEvent('reset_game');
     metrics.trackEvent('reset_game');
   };
@@ -292,7 +284,6 @@ const PlayerMenu = ({
       gameScore,
     });
     goToStart();
-    setRandomizingPlayer(true);
   };
 
   const handleUpdatePlayerName = () => {

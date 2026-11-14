@@ -12,19 +12,11 @@ export enum GameFormat {
   TwoHeadedGiant = 'two-headed-giant',
 }
 
-export enum PreStartMode {
-  None = 'none',
-  RandomKing = 'random-king',
-  FingerGame = 'finger-game',
-  Trivia = 'trivia',
-}
-
 export type Settings = {
   keepAwake: boolean;
   showStartingPlayer: boolean;
   showPlayerMenuCog: boolean;
   goFullscreenOnStart: boolean;
-  preStartMode: PreStartMode;
   showAnimations: boolean;
   useMonarch: boolean;
   showMatchScore: boolean;
@@ -61,7 +53,6 @@ export const settingsSchema = z.object({
   showStartingPlayer: z.boolean(),
   showPlayerMenuCog: z.boolean(),
   goFullscreenOnStart: z.boolean(),
-  preStartMode: z.nativeEnum(PreStartMode),
   showAnimations: z.boolean(),
   useMonarch: z.boolean().default(false),
   showMatchScore: z.boolean().default(true),
@@ -74,7 +65,6 @@ export const defaultSettings: Settings = {
   keepAwake: true,
   showStartingPlayer: true,
   showPlayerMenuCog: true,
-  preStartMode: PreStartMode.None,
   showAnimations: true,
   useMonarch: false,
   showMatchScore: true,

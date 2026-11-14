@@ -43,11 +43,7 @@ export type GlobalSettingsContextType = {
   setSettings: (settings: Settings) => void;
   playing: boolean;
   setPlaying: (playing: boolean) => void;
-  randomizingPlayer: boolean;
-  setRandomizingPlayer: (stopRandom: boolean) => void;
   isPWA: boolean;
-  preStartCompleted: boolean;
-  setPreStartCompleted: (completed: boolean) => void;
   version: Version;
   savedGame: SavedGame;
   saveCurrentGame: (currentGame: SavedGame) => void;

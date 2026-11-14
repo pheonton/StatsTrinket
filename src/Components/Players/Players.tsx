@@ -2,9 +2,7 @@ import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Player as PlayerType } from '../../Types/Player';
-import { PreStartMode } from '../../Types/Settings';
 import LifeCounter from '../LifeCounter/LifeCounter';
-import { RoulettePlayerCard } from '../PreStartGame/Games/RandomKing/RoulettePlayerCard';
 import { GridLayout } from '../Views/Play';
 
 const getGridArea = (player: PlayerType) => {
@@ -37,7 +35,7 @@ export const Players = ({
 }) => {
   const { players } = usePlayers();
 
-  const { playing, settings, preStartCompleted, gameScore } = useGlobalSettings();
+  const { settings, gameScore } = useGlobalSettings();
 
   return (
     <PlayersWrapper>
@@ -65,15 +63,6 @@ export const Players = ({
                     : undefined
                 }
               />
-
-              {settings.preStartMode === PreStartMode.RandomKing &&
-                !preStartCompleted &&
-                !playing &&
-                settings.showStartingPlayer && (
-                  <div className="absolute size-full z-20">
-                    <RoulettePlayerCard player={player} />
-                  </div>
-                )}
             </div>
           );
         })}

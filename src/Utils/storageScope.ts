@@ -31,7 +31,6 @@ export const GAME_SCOPED_KEYS = [
   'timerStartedAt',
   'timerAccumulatedMs',
   'startingPlayerIndex',
-  'preStartComplete',
 ] as const;
 
 /**
@@ -91,7 +90,6 @@ export type PersistedKey =
   | 'timerStartedAt'
   | 'timerAccumulatedMs'
   | 'startingPlayerIndex'
-  | 'preStartComplete'
   | 'settings'
   | 'initialGameSettings'
   | 'playing'

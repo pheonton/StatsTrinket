@@ -3,7 +3,6 @@ import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
-import { PreStartMode } from '../../Types/Settings';
 import { InstallPWAButton } from '../Misc/InstallPWAButton';
 import { Separator } from '../Misc/Separator';
 import { Paragraph } from '../Misc/TextComponents';
@@ -193,64 +192,9 @@ export const SettingsDialog = ({
             />
           </ToggleContainer>
           <Description>
-            On start or reset of game, will pick a random starting player,
-            according to the <b>Pre-Start mode</b>
+            On start or reset of a game, a random starting player is picked
+            and shown on their card.
           </Description>
-        </SettingContainer>
-        <SettingContainer>
-          <div className="flex flex-row justify-between items-center mb-1">
-            <label htmlFor="pre-start-modes">Player selection style</label>
-            <select
-              name="pre-start-modes"
-              id="pre-start-modes"
-              value={settings.preStartMode}
-              className="bg-secondary-main border-none outline-none text-text-primary rounded-md p-1 text-xs disabled:saturate-50 font-semibold"
-              onChange={(e) => {
-                setSettings({
-                  ...settings,
-                  preStartMode: e.target.value as PreStartMode,
-                });
-              }}
-              disabled={!settings.showStartingPlayer}
-            >
-              <option value={PreStartMode.None}>Instant</option>
-              <option value={PreStartMode.RandomKing}>Royal Shuffle</option>
-              <option value={PreStartMode.FingerGame}>Touch Roulette</option>
-              <option value={PreStartMode.Trivia}>Group Trivia</option>
-            </select>
-          </div>
-          <div className="text-xs text-left text-text-secondary">
-            Different ways to determine the starting player before the game
-            starts.
-          </div>
-
-          {settings.preStartMode === PreStartMode.None && (
-            <div className="text-xs text-left text-text-secondary mt-1">
-              <span className="text-text-primary">Instant:</span> A random
-              starting player will simply be shown on start.
-            </div>
-          )}
-          {settings.preStartMode === PreStartMode.RandomKing && (
-            <div className="text-xs text-left text-text-secondary mt-1">
-              <span className="text-text-primary">Royal Shuffle:</span> Randomly
-              pass a crown between all players, press the screen to stop it. The
-              player who has the crown when it stops gets to start.
-            </div>
-          )}
-          {settings.preStartMode === PreStartMode.FingerGame && (
-            <div className="text-xs text-left text-text-secondary mt-1">
-              <span className="text-text-primary">Touch Roulette:</span> All
-              players put a finger on the screen, one will be chosen at random.
-            </div>
-          )}
-
-          {settings.preStartMode === PreStartMode.Trivia && (
-            <div className="text-xs text-left text-text-secondary mt-1">
-              <span className="text-text-primary">Group Trivia:</span> A random
-              "who is the most ..." type question will be shown, the group
-              decides which player fits the question best.
-            </div>
-          )}
         </SettingContainer>
         <SettingContainer>
           <ToggleContainer>

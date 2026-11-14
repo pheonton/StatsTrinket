@@ -17,7 +17,7 @@ import { FinishGameButton, LoseGameButton } from '../Buttons/LoseButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../Players/PlayerMenu';
-import { StartingPlayerCard } from '../PreStartGame/StartingPlayerCard';
+import { StartingPlayerCard } from './StartingPlayerCard';
 import Health from './Health';
 import { useCommanderArt } from '../../Hooks/useCommanderArt';
 
