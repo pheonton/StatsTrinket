@@ -2,172 +2,81 @@
 
 [![PWA](https://img.shields.io/badge/PWA-Enabled-blue)](https://statstrinket.com/)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-green.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 
 ![Stats Trinket - a four-player Commander game with commander art backgrounds, per-deck names and commander-damage tracking](public/screenshot.png)
 
-> **Based on Life Trinket:** Stats Trinket is a fork of
-> [Vikeo/LifeTrinket](https://github.com/Vikeo/LifeTrinket) by Viktor Raadberg,
-> developed independently. It adds per-deck statistics and commander art, is
-> hosted on **Cloudflare Pages** at [statstrinket.com](https://statstrinket.com/),
-> and ships with no third-party analytics.
+A free, offline-capable life counter for **Magic: The Gathering**, made for
+**Commander/EDH** tables, at [statstrinket.com](https://statstrinket.com/). It
+tracks life, commander damage and counters for up to 6 players and keeps
+statistics for every deck you play. No accounts, no ads, no analytics.
 
-A **free, offline-capable PWA life counter** for **Magic: The Gathering** built with **React 19** and **TypeScript**. Perfect for **Commander/EDH** games with comprehensive tracking for life totals, commander damage, poison counters, energy, and experience. **Share game states instantly via QR code** with other players.
+Stats Trinket is based on [Life Trinket](https://github.com/Vikeo/LifeTrinket)
+by Viktor Raadberg and is developed independently.
 
-## Why Stats Trinket?
+## Features
 
-Created for the Commander/EDH community because existing life counters lacked essential features for multiplayer Magic games. Stats Trinket is a **lightweight, privacy-focused web app** that does what you need without bloat.
+- Life, commander damage (including partners), poison, energy, experience and
+  monarch for 1 to 6 players, in layouts that face each seat
+- **Deck statistics**: name each player's deck; finished games are recorded per
+  deck (games, wins, losses, win rate, opponents, pod size) and can be exported
+  and imported as CSV, e.g. to add a missed game
+- **Commander art**: pick a commander (and partner) from a live
+  [Scryfall](https://scryfall.com) search; its art becomes the player's
+  background and colour. Fetched on demand, never stored.
+- Life history, match score across a series, optional round timer, colour
+  picker, and sharing a game via QR code
+- Works offline once installed: open the site and choose "Add to Home Screen"
+  (Safari) or "Install app" (Chrome)
 
-✅ **No accounts required**
-✅ **No advertisements**
-✅ **No analytics or tracking**
-✅ **100% free and open source**
-✅ **Works completely offline** after PWA installation
+## Usage
 
-## 📋 Usage
+- **Tap** + or - for 1 life, **long press** for 10. Tap a counter to add 1,
+  long press to subtract 1.
+- **Swipe down** on a card or tap its cog for the **player menu**: colour,
+  commander, deck, name, counters, life history, reset, forfeit, and the exit
+  button, which pauses the game for **Resume** on the start menu.
+- At 0 life, 21 commander damage from one commander or 10 poison, a red skull
+  appears. Tapping it puts the player out: their card ignores taps until they
+  return with the red skull in their player menu.
+- With one player left, the **end screen** offers **Start Game N** (count the
+  win, next game in the series), **Back to Game** (count nothing; a trophy on
+  the winner's card reopens it) and **Leave Game** (count the win, back to the
+  start menu). **Save to deck stats** decides whether the game is recorded.
 
-There are some controls that you might now know about, so here's a short list of them.
+Known issue: player colours can't be changed in Firefox on mobile.
 
-### Life counter
+## Development
 
-- **Tap** on a player's + or - button to add or subtract **1 life**.
-- **Long press** on a player's + or - button to add or subtract **10 life**.
-
-### Commander damage and other counters
-
-- **Tap** on the counter to add **1 counter**.
-- **Long press** on the counter to subtract **1 counter**.
-
-### Other
-
-- When a player is **at or below 0 life**, has taken **21 or more Commander Damage** or has **10 or
-  more poison counters**, a button with a skull will appear on that player's card.
-
-  Tap on the button to mark that player as lost, dimming their player card.
-
-## 🚀 Features
-
-### General features
-
-- 🌐 Web app, no installation required
-  - (Though you can and probably should install it as a PWA (Progressive Web App) via your
-    mobile browser)
-- 📴 Works offline
-  - (If you have installed it as a PWA)
-- 🆓 Free
-- ❌ No ads
-  - There is a "Feed this guy" button if you want to support me
-- 🚫 No analytics or tracking
-- 📲 Share game state via QR code
-  - Share your current game with other players instantly
-  - Scan QR code to load the exact game state on another device
-
-### Life counter features
-
-- 🔢 Life counter for up to 6 players
-- 💥 Different types of damage tracking
-  - 👑 Commander damage
-  - 👫 Partner damage
-  - ☠️ Poison
-- 📊 Other counters
-  - ✨ Experience
-  - ⚡ Energy
-- 🎨 Full RGB color picker for each player
-  - Depends on browser support (Chrome and Safari works at least)
-
-## ⚠️ Known issues
-
-- It is not possible to change player colors in Firefox mobile browsers.
-
-## 🛠️ Tech Stack
-
-- **Frontend Framework**: React 19.2.0 with functional components and hooks
-- **Language**: TypeScript 5.9 in strict mode
-- **Styling**: Tailwind CSS v4 with react-twc for typed components
-- **Build Tool**: Vite with SWC for fast compilation
-- **PWA**: vite-plugin-pwa with Workbox for offline functionality
-- **Validation**: Zod for runtime schema validation
-- **Analytics**: None
-- **Hosting**: Cloudflare Pages (static build + `public/_headers` / `public/_redirects`)
-- **State Management**: React Context API
-- **Persistence**: LocalStorage with validation
-
-## 📱 Installation
-
-### As a Progressive Web App (Recommended)
-
-**iOS (Safari)**:
-1. Open [statstrinket.com](https://statstrinket.com/) in Safari
-2. Tap the Share button
-3. Scroll down and tap "Add to Home Screen"
-4. Tap "Add"
-
-**Android (Chrome)**:
-1. Open [statstrinket.com](https://statstrinket.com/) in Chrome
-2. Tap the menu (three dots)
-3. Tap "Install app" or "Add to Home Screen"
-
-### For Development
+React 19, TypeScript, Tailwind CSS v4, Vite and vite-plugin-pwa; state lives in
+React context and localStorage. Requires Node.js 20+ and pnpm.
 
 ```bash
-# Clone the repository
-git clone https://github.com/pheonton/StatsTrinket.git
-cd StatsTrinket
-
-# Install dependencies (requires pnpm)
 pnpm install
-
-# Start development server
-pnpm run dev
-
-# Build for production
-pnpm run build
-
-# Preview production build
-pnpm run preview
+pnpm run dev      # development server
+pnpm run lint
+pnpm run test
+pnpm run build    # production build in dist/
 ```
 
-### Deployment (Cloudflare Pages)
+Every push to `main` deploys to Cloudflare Pages, and `pnpm run release` tags a
+new version. See [CLAUDE.md](CLAUDE.md) for the architecture.
 
-This fork deploys as a static site on **Cloudflare Pages** via its GitHub
-integration — no secrets or deploy workflow required:
+## License
 
-1. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**
-2. Select this repository
-3. Build settings:
-   - Framework preset: **Vite**
-   - Build command: `pnpm run build`
-   - Build output directory: `dist`
-4. Save. Every push to `main` deploys to production; other branches and PRs get
-   preview URLs.
+[GNU Affero General Public License v3.0](LICENSE). Under its network-use clause,
+a publicly hosted modified version must make its complete source available;
+this public repository satisfies that. The AGPL covers the source code. Card
+artwork visible in screenshots is © Wizards of the Coast and its artists, used
+under the Fan Content Policy, and is not covered by the AGPL.
 
-`public/_headers` sets security and cache headers; `public/_redirects` provides
-the SPA fallback so any path serves `index.html`. Both files also work as-is on
-Netlify if you prefer it.
+Stats Trinket is unofficial Fan Content permitted under the
+[Fan Content Policy](https://company.wizards.com/en/legal/fancontentpolicy). Not
+approved or endorsed by Wizards. Card images and artwork are © Wizards of the
+Coast and the credited illustrators.
 
-## 🤝 Contributing
+## Acknowledgments
 
-This is a personal fork, developed independently of the original
-[Vikeo/LifeTrinket](https://github.com/Vikeo/LifeTrinket).
-
-## 📄 License
-
-This project is licensed under the [GNU Affero General Public License v3.0](LICENSE).
-Because the AGPL's network-use clause applies, any publicly hosted modified
-version must make its complete source available to users — this repository being
-public satisfies that.
-
-## 🙏 Acknowledgments
-
-- Magic: The Gathering players and the Commander/EDH community
-- React, Vite, and Tailwind CSS teams for excellent tools
-- All contributors and users who provide feedback
-
-## 🔍 Keywords
-
-MTG life counter, Magic the Gathering life tracker, Commander life counter, EDH life counter, MTG commander damage tracker, Magic life counter app, MTG poison counter, MTG energy counter, multiplayer life counter, free MTG app, offline MTG counter, PWA life counter, Magic gathering app, commander damage calculator, MTG game tracker, QR code game sharing, share MTG game state
-
----
-
-Made with ❤️ for the Magic: The Gathering community by [pheonton](https://github.com/pheonton), based on [Life Trinket](https://github.com/Vikeo/LifeTrinket) by [Viktor Raadberg](https://github.com/Vikeo)
+- [Viktor Raadberg](https://github.com/Vikeo), creator of the original
+  [Life Trinket](https://github.com/Vikeo/LifeTrinket)
+- [Scryfall](https://scryfall.com) for the card search and art
+- The Magic: The Gathering and Commander/EDH community
