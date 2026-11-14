@@ -2,6 +2,7 @@ import { createContext } from 'react';
 import { InitialGameSettings, Settings } from '../Types/Settings';
 import { LifeHistoryEvent, Player } from '../Types/Player';
 import { DeckStats } from '../Types/DeckStats';
+import type { TimerSnapshot } from '../Hooks/useGameTimer';
 
 type Version = {
   installedVersion: string;
@@ -14,6 +15,9 @@ export type SavedGame = {
   initialGameSettings: InitialGameSettings;
   players: Player[];
   gameScore?: GameScore;
+  // Going to the start menu clears both, so a paused game carries its own.
+  timer?: TimerSnapshot;
+  useMonarch?: boolean;
 } | null;
 
 export type GameScore = {

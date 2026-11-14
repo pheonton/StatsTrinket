@@ -128,7 +128,7 @@ localStorage during render, so a provider effect is too late.
 4. Type-safe at compile time, validated at runtime
 
 **Saved Game Pattern**:
-The `savedGame` mechanism allows users to pause and resume games. When saving, it captures `initialGameSettings`, `players` array, and optionally `gameScore`. When resuming, state is restored and `savedGame` is cleared from localStorage.
+The `savedGame` mechanism allows users to pause and resume games. When saving (the player menu's exit button, no confirmation), it captures `initialGameSettings`, `players` array, `gameScore`, the game timer (`readTimerSnapshot`) and `useMonarch`, since going to the start menu clears the timer keys and turns Monarch off. When resuming, state is restored and `savedGame` is cleared from localStorage.
 
 ## Layout System
 

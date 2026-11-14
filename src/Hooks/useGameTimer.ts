@@ -1,5 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+export type TimerSnapshot = { elapsedMs: number; running: boolean };
+
+/** The timer as stored right now, for a game being paused to the start menu. */
+export const readTimerSnapshot = (): TimerSnapshot => {
+  const startedAt = localStorage.getItem('timerStartedAt');
+  const accumulated = Number(localStorage.getItem('timerAccumulatedMs') || '0');
+  return {
+    elapsedMs: accumulated + (startedAt ? Date.now() - Number(startedAt) : 0),
+    running: startedAt !== null,
+  };
+};
+
+/**
+ * Puts a paused game's timer back before the game view mounts. A running
+ * timer continues from now: time spent in the start menu is not counted.
+ */
+export const restoreTimerSnapshot = (snapshot: TimerSnapshot) => {
+  localStorage.setItem('timerAccumulatedMs', String(snapshot.elapsedMs));
+  if (snapshot.running) {
+    localStorage.setItem('timerStartedAt', String(Date.now()));
+  } else {
+    localStorage.removeItem('timerStartedAt');
+  }
+};
+
 export const useGameTimer = (countdownMinutes: number) => {
   const [startedAt, setStartedAt] = useState<number | null>(() => {
     const saved = localStorage.getItem('timerStartedAt');

@@ -32,6 +32,7 @@ import { IconCheckbox } from '../Misc/IconCheckbox';
 import { checkContrast } from '../../Utils/checkContrast';
 import { HistoryDialog } from '../Dialogs/HistoryDialog';
 import { TrackingChip } from '../Tracking/TrackingChip';
+import { readTimerSnapshot } from '../../Hooks/useGameTimer';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -194,7 +195,6 @@ const PlayerMenu = ({
 }: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
   const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
-  const endGameDialogRef = useRef<HTMLDialogElement | null>(null);
   const forfeitGameDialogRef = useRef<HTMLDialogElement | null>(null);
   const historyDialogRef = useRef<HTMLDialogElement | null>(null);
   const deckNameDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -282,6 +282,8 @@ const PlayerMenu = ({
       players,
       initialGameSettings,
       gameScore,
+      timer: readTimerSnapshot(),
+      useMonarch: settings.useMonarch,
     });
     goToStart();
   };
@@ -690,8 +692,10 @@ const PlayerMenu = ({
           <ButtonsSections>
             <button
               className="text-primary-main cursor-pointer webkit-user-select-none"
-              onClick={() => endGameDialogRef.current?.show()}
-              aria-label="Back to start"
+              // No confirmation: the game is saved and can be resumed from the
+              // start menu.
+              onClick={handleGoToStart}
+              aria-label="Pause and go to start"
             >
               <Exit size={iconSize} style={{ rotate: '180deg' }} />
             </button>
@@ -895,47 +899,6 @@ const PlayerMenu = ({
           </div>
         </dialog>
 
-        <dialog
-          ref={endGameDialogRef}
-          className="z-[999] size-full bg-background-settings overflow-y-scroll"
-          onClick={() => endGameDialogRef.current?.close()}
-        >
-          <div className="flex size-full items-center justify-center">
-            <div className="flex flex-col justify-center p-4 gap-2 bg-background-default rounded-xl border-none">
-              <h1
-                className="text-center text-text-primary"
-                style={{ fontSize: extraCountersSize }}
-              >
-                Go to start?
-              </h1>
-              <div
-                style={{ fontSize: iconSize }}
-                className="text-center text-text-primary"
-              >
-                (Game will be saved)
-              </div>
-              <div className="flex justify-evenly gap-2">
-                <button
-                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
-                  style={{ fontSize: iconSize }}
-                  onClick={() => endGameDialogRef.current?.close()}
-                >
-                  No
-                </button>
-                <button
-                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
-                  onClick={() => {
-                    handleGoToStart();
-                    endGameDialogRef.current?.close();
-                  }}
-                  style={{ fontSize: iconSize }}
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
-          </div>
-        </dialog>
 
         <dialog
           ref={forfeitGameDialogRef}

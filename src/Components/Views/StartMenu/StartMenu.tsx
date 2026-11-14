@@ -6,6 +6,7 @@ import { useMetrics } from '../../../Hooks/useMetrics';
 import { useUserActions } from '../../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
+import { restoreTimerSnapshot } from '../../../Hooks/useGameTimer';
 import { Cog, Info, Trinket } from '../../../Icons/generated';
 import {
   InitialGameSettings,
@@ -60,6 +61,7 @@ const Start = () => {
     initialGameSettings,
     setInitialGameSettings,
     settings,
+    setSettings,
     isPWA,
     version,
     setPlaying,
@@ -229,6 +231,12 @@ const Start = () => {
     setPlayers(savedGame.players);
     if (savedGame.gameScore) {
       setGameScore(savedGame.gameScore);
+    }
+    if (savedGame.timer) {
+      restoreTimerSnapshot(savedGame.timer);
+    }
+    if (savedGame.useMonarch !== undefined) {
+      setSettings({ ...settings, useMonarch: savedGame.useMonarch });
     }
     saveCurrentGame(null);
     setShowPlay(true);
