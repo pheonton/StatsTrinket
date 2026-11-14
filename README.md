@@ -5,6 +5,10 @@
 
 ![Stats Trinket - a four-player Commander game with commander art backgrounds, per-deck names and commander-damage tracking](public/screenshot.png)
 
+*Card art in the screenshot: Fire Lord Azula by Fahmi Fauzi; Y'shtola, Night's
+Blessed by Magali Villeneuve; Krenko, Mob Boss by Lie Setiawan; Cloud,
+Ex-SOLDIER by Justyna Dura. © Wizards of the Coast.*
+
 A free, offline-capable life counter for **Magic: The Gathering**, made for
 **Commander/EDH** tables, at [statstrinket.com](https://statstrinket.com/). It
 tracks life, commander damage and counters for up to 6 players and keeps
