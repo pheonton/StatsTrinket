@@ -4,7 +4,7 @@ import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { restoreTimerSnapshot } from '../../../Hooks/useGameTimer';
-import { Cog, Info, Trinket } from '../../../Icons/generated';
+import { Cog, Info } from '../../../Icons/generated';
 import {
   InitialGameSettings,
   Orientation,
@@ -273,9 +273,6 @@ const Start = () => {
               <line x1="6" y1="20" x2="6" y2="16" />
             </svg>
           </button>
-          <a href="https://statstrinket.com/">
-            <Trinket className="absolute w-12 h-12 top-4 right-4" />
-          </a>
 
           <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
             <div className="flex flex-row items-center">Stats Trinket</div>

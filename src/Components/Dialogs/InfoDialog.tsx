@@ -20,7 +20,6 @@ export const InfoDialog = ({
       <div className=" text-text-primary">
         <h2 className="text-md underline">Contributors</h2>
         <div className="flex flex-row items-center gap-1 text-sm">
-          {/* <Trinket className="size-4" /> */}
           <div className="flex flex-col">
             <div>
               <a
