@@ -40,6 +40,9 @@ const MainWrapper = twc.div`h-fit w-full overflow-hidden items-center flex flex-
 
 const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 flex flex-col px-4 z-10 gap-3`;
 
+const menuButtonClass =
+  'flex flex-1 justify-center items-center gap-1 bg-primary-main px-3 py-2 rounded-md text-sm font-bold text-text-primary transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark';
+
 const startButtonClass =
   'flex w-full justify-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold';
 
@@ -247,33 +250,6 @@ const Start = () => {
       <div className="flex justify-center items-center w-screen">
         {/* Room for the fixed footer, which stacks Resume above New Game. */}
         <MainWrapper className={savedGame ? 'pb-36' : 'pb-16'}>
-          <Info
-            className="size-8 absolute top-7 left-4 text-primary-main"
-            onClick={() => {
-              openInfo();
-            }}
-          />
-          <button
-            type="button"
-            aria-label="Deck stats"
-            onClick={openDeckStats}
-            className="size-8 absolute top-16 left-4 text-primary-main"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="size-full"
-            >
-              <line x1="12" y1="20" x2="12" y2="10" />
-              <line x1="18" y1="20" x2="18" y2="4" />
-              <line x1="6" y1="20" x2="6" y2="16" />
-            </svg>
-          </button>
-
           <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
             <div className="flex flex-row items-center">Stats Trinket</div>
             <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
@@ -284,7 +260,50 @@ const Start = () => {
 
           <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
             <div className="w-full">
-              <ToggleButtonsWrapper className="mt-4">
+              <div className="flex gap-2 mt-4 text-nowrap">
+                <button className={menuButtonClass} onClick={openInfo}>
+                  <Info size="1rem" />
+                  Help
+                </button>
+                <button className={menuButtonClass} onClick={openDeckStats}>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="size-4"
+                    aria-hidden
+                  >
+                    <line x1="12" y1="20" x2="12" y2="10" />
+                    <line x1="18" y1="20" x2="18" y2="4" />
+                    <line x1="6" y1="20" x2="6" y2="16" />
+                  </svg>
+                  Stats
+                </button>
+                <div className="relative flex flex-1 justify-center">
+                  <button className={menuButtonClass} onClick={openSettings}>
+                    <Cog />
+                    Settings
+                  </button>
+                  <div
+                    data-not-latest-version={
+                      !version.isLatest && !!version.remoteVersion
+                    }
+                    className="absolute flex justify-center text-text-primary text-xxs -bottom-4 bg-primary-dark px-2 rounded-md
+                opacity-0 transition-all duration-200 delay-500
+                data-[not-latest-version=true]:opacity-100
+                "
+                  >
+                    <div className="absolute bg-primary-dark rotate-45 size-2 -top-[2px] z-0" />
+                    <span className="z-10">
+                      v{version.remoteVersion} available!
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <ToggleButtonsWrapper className="mt-6">
                 <ToggleButton
                   label="Commander"
                   checked={
@@ -308,33 +327,6 @@ const Start = () => {
                     });
                   }}
                 />
-
-                <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
-                  <button
-                    className="flex justify-center self-center items-center mt-1 mb-1 bg-primary-main px-3 py-2 rounded-md transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
-                    onClick={openSettings}
-                  >
-                    <span className="text-sm flex flex-row items-center text-text-primary font-bold">
-                      <Cog />
-                      &nbsp;Game Settings
-                    </span>
-                  </button>
-
-                  <div
-                    data-not-latest-version={
-                      !version.isLatest && !!version.remoteVersion
-                    }
-                    className="absolute flex justify-center text-text-primary text-xxs -bottom-5 bg-primary-dark px-2 rounded-md
-                opacity-0 transition-all duration-200 delay-500
-                data-[not-latest-version=true]:opacity-100
-                "
-                  >
-                    <div className="absolute bg-primary-dark rotate-45 size-2 -top-[2px] z-0" />
-                    <span className="z-10">
-                      v{version.remoteVersion} available!
-                    </span>
-                  </div>
-                </div>
               </ToggleButtonsWrapper>
               <LabelText className="mt-4">Number of Players</LabelText>
               <SliderWrapper>
