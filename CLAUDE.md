@@ -11,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Code Quality
 - `pnpm run lint` - Run ESLint with TypeScript parser
+- `pnpm run test` - Run the Vitest unit tests (`src/**/*.test.ts`)
 
 ### Deployment & Assets
 - Deployment is automatic: **Cloudflare Pages** builds and deploys on every push to `main` (build command `pnpm run build`, output `dist`). There is no deploy script.
@@ -26,8 +27,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Stats Trinket (statstrinket.com, a fork of Vikeo/LifeTrinket developed independently; repo `pheonton/StatsTrinket`) is a Magic the Gathering life counter PWA built with React 19, TypeScript, and Tailwind CSS v4. The application follows an offline-first architecture with localStorage as the primary persistence layer.
 
 ### Core Stack
-- **React 19.2.0** with functional components and hooks
-- **Vite** with SWC for fast compilation
+- **React 19** with functional components and hooks
+- **Vite** (esbuild for TypeScript/JSX, no React plugin)
 - **Tailwind CSS v4** with `react-twc` for typed, styled components
 - **TypeScript** in strict mode
 - **Zod** for runtime validation of persisted data
@@ -148,12 +149,13 @@ The Health component uses ResizeObserver to dynamically calculate font sizes bas
 ### Component Hierarchy
 ```
 App
-├── PlayersProvider
-│   └── GlobalSettingsProvider
+├── GlobalSettingsProvider
+│   └── PlayersProvider
 │       └── StatsTrinket (main router)
 │           ├── StartMenu (setup and configuration)
 │           │   ├── InfoDialog
 │           │   ├── SettingsDialog
+│           │   ├── DeckStatsDialog
 │           │   └── LayoutOptions
 │           └── Play (active game view)
 │               ├── Players (grid container)
@@ -162,7 +164,8 @@ App
 │               │       ├── CommanderDamageBar
 │               │       ├── ExtraCountersBar
 │               │       ├── PlayerMenu (swipe-to-open)
-│               │       └── LoseGameButton (conditional)
+│               │       └── LoseGameButton / FinishGameButton (conditional)
+│               ├── GameTimer
 │               └── GameOver (when winner determined)
 ```
 
@@ -367,7 +370,7 @@ PWA settings in `vite.config.ts`:
 - **Clients Claim**: Takes control of all clients immediately
 - **Offline Support**: Full offline functionality after initial load
 
-Manifest configuration in `index.html` includes theme colors, icons, and display settings.
+The web app manifest (name, icons, theme colours, screenshot) is defined only in `vite.config.ts` under `VitePWA({ manifest })`; the plugin generates `manifest.webmanifest` and links it into `index.html`. Don't add a hand-written `manifest.json` alongside it - browsers use whichever is linked first.
 
 ## Important Considerations
 
@@ -393,7 +396,7 @@ Manifest configuration in `index.html` includes theme colors, icons, and display
 Commander damage is bidirectional between all players. When adding/modifying:
 1. Update in player's `commanderDamage` array
 2. Index corresponds to opponent's index in `players` array
-3. Each `CommanderDamage` object has `amount` and `isPartner` flag
+3. Each `CommanderDamage` object has `source` (the opponent's index), `damageTotal` and `partnerDamageTotal`
 4. Lose condition is ≥21 damage from any single commander
 
 ### Testing Gestures

@@ -8,14 +8,29 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'logo192.png', 'logo512.png', 'robots.txt', 'sitemap.xml', 'humans.txt', 'browserconfig.xml'],
+      // The only web app manifest; vite-plugin-pwa links it into index.html.
       manifest: {
-        name: 'Stats Trinket - MTG Life Counter',
+        name: 'Stats Trinket - MTG Life Counter & Commander Damage Tracker',
         short_name: 'Stats Trinket',
-        description: 'Free offline MTG life counter PWA for up to 6 players. Track life totals, commander damage, poison, energy counters. Share games via QR code.',
+        description: 'Free offline MTG life counter PWA for up to 6 players. Track life totals, commander damage, partner damage, poison, energy, and experience counters. Share games via QR code. Perfect for Commander/EDH games.',
+        start_url: '/',
+        scope: '/',
+        lang: 'en',
+        dir: 'ltr',
+        categories: ['games', 'utilities', 'entertainment'],
         theme_color: '#000000',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'any',
+        screenshots: [
+          {
+            src: 'screenshot.png',
+            sizes: '1280x720',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'A four-player Commander game with commander art',
+          },
+        ],
         icons: [
           {
             src: 'logo192.png',
