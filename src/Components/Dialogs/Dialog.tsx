@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Close } from '../../Icons/generated';
-import { useAnalytics } from '../../Hooks/useAnalytics';
 import { Separator } from '../Misc/Separator';
 
 export const Dialog: React.FC<{
@@ -9,7 +8,6 @@ export const Dialog: React.FC<{
   children: React.ReactNode;
   dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 }> = ({ id, title, children, dialogRef }) => {
-  const analytics = useAnalytics();
 
   useEffect(() => {
     if (!dialogRef.current) {
@@ -25,7 +23,6 @@ export const Dialog: React.FC<{
           e.clientY > dialogDimensions.bottom) &&
         dialogRef.current?.open
       ) {
-        analytics.trackEvent(`${id}_outside_clicked`);
         dialogRef.current?.close();
       }
     });
@@ -39,7 +36,6 @@ export const Dialog: React.FC<{
     >
       <button
         onClick={() => {
-          analytics.trackEvent(`${id}_cross_clicked`);
           dialogRef.current?.close();
         }}
         className="flex absolute -top-2 right-2 z-10 w-10 h-10 bg-background-default rounded-full"

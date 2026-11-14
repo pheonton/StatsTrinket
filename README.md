@@ -21,7 +21,7 @@ Created for the Commander/EDH community because existing life counters lacked es
 
 ✅ **No accounts required**
 ✅ **No advertisements**
-✅ **No analytics or tracking** (this fork ships without an analytics provider)
+✅ **No analytics or tracking**
 ✅ **100% free and open source**
 ✅ **Works completely offline** after PWA installation
 

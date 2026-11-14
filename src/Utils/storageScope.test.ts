@@ -4,10 +4,8 @@ import {
   GAME_SCOPED_KEYS,
   KEPT_BY_GO_TO_START,
   SESSION_SCOPED_KEYS,
-  TRACKING_KEYS,
   clearKeys,
   keysToClearOnGoToStart,
-  keysToClearOnLoad,
 } from './storageScope';
 
 const fakeStorage = (entries: Record<string, string>) => {
@@ -45,7 +43,6 @@ describe('the persisted key lists', () => {
       ...GAME_SCOPED_KEYS,
       ...DEVICE_SCOPED_KEYS,
       ...SESSION_SCOPED_KEYS,
-      ...TRACKING_KEYS,
     ];
     expect(new Set(all).size).toBe(all.length);
   });
@@ -54,30 +51,6 @@ describe('the persisted key lists', () => {
     for (const key of DEVICE_SCOPED_KEYS) {
       expect(GAME_SCOPED_KEYS).not.toContain(key);
     }
-  });
-});
-
-describe('keysToClearOnLoad', () => {
-  it('clears every game-scoped key when the link names a new game', () => {
-    const cleared = keysToClearOnLoad({ isNew: true });
-    for (const key of GAME_SCOPED_KEYS) {
-      expect(cleared).toContain(key);
-    }
-  });
-
-  it('never clears a device-scoped key', () => {
-    const cleared = keysToClearOnLoad({ isNew: true });
-    for (const key of DEVICE_SCOPED_KEYS) {
-      expect(cleared).not.toContain(key);
-    }
-  });
-
-  it('clears nothing when the link resumes the game in progress', () => {
-    expect(keysToClearOnLoad({ isNew: false })).toEqual([]);
-  });
-
-  it('clears nothing when no game is tracked', () => {
-    expect(keysToClearOnLoad(null)).toEqual([]);
   });
 });
 
@@ -93,22 +66,20 @@ describe('clearKeys', () => {
       settings: '{}',
       initialGameSettings: '{}',
       savedGame: 'null',
-      trackedGame: '{}',
     });
 
-    clearKeys(keysToClearOnLoad({ isNew: true }), storage);
+    clearKeys(GAME_SCOPED_KEYS, storage);
 
     expect(Object.keys(storage.store).sort()).toEqual([
       'initialGameSettings',
       'savedGame',
       'settings',
-      'trackedGame',
     ]);
   });
 
-  it('removes nothing for a resumed game', () => {
+  it('removes nothing when given no keys', () => {
     const storage = fakeStorage({ players: '[]', gameScore: '{"0":1}' });
-    clearKeys(keysToClearOnLoad({ isNew: false }), storage);
+    clearKeys([], storage);
     expect(Object.keys(storage.store).sort()).toEqual(['gameScore', 'players']);
   });
 });

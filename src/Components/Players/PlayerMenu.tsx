@@ -1,7 +1,5 @@
 import { useMemo, useRef, useState, type RefObject } from 'react';
 import { twc } from 'react-twc';
-import { useAnalytics } from '../../Hooks/useAnalytics';
-import { useMetrics } from '../../Hooks/useMetrics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useSafeRotate } from '../../Hooks/useSafeRotate';
@@ -31,7 +29,6 @@ import { RotationDivProps } from '../Buttons/CommanderDamage';
 import { IconCheckbox } from '../Misc/IconCheckbox';
 import { checkContrast } from '../../Utils/checkContrast';
 import { HistoryDialog } from '../Dialogs/HistoryDialog';
-import { TrackingChip } from '../Tracking/TrackingChip';
 import { readTimerSnapshot } from '../../Hooks/useGameTimer';
 
 const PlayerMenuWrapper = twc.div`
@@ -232,11 +229,8 @@ const PlayerMenu = ({
     initialGameSettings,
     gameScore,
     deckStats,
-    clearTrackedGame,
   } = useGlobalSettings();
 
-  const analytics = useAnalytics();
-  const metrics = useMetrics();
 
   const { updatePlayer, resetCurrentGame, players } = usePlayers();
 
@@ -264,14 +258,7 @@ const PlayerMenu = ({
   const handleResetGame = () => {
     resetCurrentGame();
     setShowPlayerMenu(false);
-
-    // The next game is not the game the link named, so stop publishing.
-    clearTrackedGame();
-
     setPlaying(false);
-
-    analytics.trackEvent('reset_game');
-    metrics.trackEvent('reset_game');
   };
 
   const handleGoToStart = () => {
@@ -457,18 +444,8 @@ const PlayerMenu = ({
         }}
         ref={settingsContainerRef}
       >
-        {/* Opposite the close button, so the two share the menu's top edge.
-            Absolute like it is, because the wrapper centres its content and
-            a child in the flow would push the whole menu down. Renders
-            nothing at all unless this game is tracked. */}
-        <div className="absolute left-2 top-2 z-10">
-          <TrackingChip />
-        </div>
-
         <button
           onClick={() => {
-            analytics.trackEvent('close_player_menu_button');
-            metrics.trackEvent('close_player_menu_button');
             setShowPlayerMenu(false);
           }}
           className="flex absolute top-2 right-2 z-10"
@@ -487,14 +464,6 @@ const PlayerMenu = ({
                 type="color"
                 className="size-[200%] absolute -left-2 -top-2"
                 value={player.color}
-                onClick={() => {
-                  analytics.trackEvent('color_picker_opened', {
-                    player: player.index,
-                  });
-                  metrics.trackEvent('color_picker_opened', {
-                    player: player.index,
-                  });
-                }}
               />
             </ColorPickerButton>
             {player.settings.useCommanderDamage && (
@@ -541,12 +510,6 @@ const PlayerMenu = ({
                     />
                   }
                   onChange={(e) => {
-                    analytics.trackEvent('toggle_partner', {
-                      checked: e.target.checked,
-                    });
-                    metrics.trackEvent('toggle_partner', {
-                      checked: e.target.checked,
-                    });
                     handleSettingsChange(e);
                   }}
                   aria-checked={player.settings.usePartner}
@@ -577,12 +540,6 @@ const PlayerMenu = ({
                   />
                 }
                 onChange={(e) => {
-                  analytics.trackEvent('toggle_poison', {
-                    checked: e.target.checked,
-                  });
-                  metrics.trackEvent('toggle_poison', {
-                    checked: e.target.checked,
-                  });
                   handleSettingsChange(e);
                 }}
                 aria-checked={player.settings.usePoison}
@@ -610,12 +567,6 @@ const PlayerMenu = ({
                   />
                 }
                 onChange={(e) => {
-                  analytics.trackEvent('toggle_energy', {
-                    checked: e.target.checked,
-                  });
-                  metrics.trackEvent('toggle_energy', {
-                    checked: e.target.checked,
-                  });
                   handleSettingsChange(e);
                 }}
                 aria-checked={player.settings.useEnergy}
@@ -643,12 +594,6 @@ const PlayerMenu = ({
                   />
                 }
                 onChange={(e) => {
-                  analytics.trackEvent('toggle_experience', {
-                    checked: e.target.checked,
-                  });
-                  metrics.trackEvent('toggle_experience', {
-                    checked: e.target.checked,
-                  });
                   handleSettingsChange(e);
                 }}
                 aria-checked={player.settings.useExperience}
@@ -676,12 +621,6 @@ const PlayerMenu = ({
                   />
                 }
                 onChange={(e) => {
-                  analytics.trackEvent('toggle_monarch', {
-                    checked: e.target.checked,
-                  });
-                  metrics.trackEvent('toggle_monarch', {
-                    checked: e.target.checked,
-                  });
                   setSettings({ ...settings, useMonarch: e.target.checked });
                 }}
                 aria-checked={settings.useMonarch}
@@ -791,8 +730,6 @@ const PlayerMenu = ({
               }}
               className="text-primary-main"
               onClick={() => {
-                analytics.trackEvent('life_history_opened_from_player_menu');
-                metrics.trackEvent('life_history_opened_from_player_menu');
                 historyDialogRef.current?.showModal();
               }}
               role="button"
@@ -845,12 +782,6 @@ const PlayerMenu = ({
                   forfeitGameDialogRef.current?.show();
                 } else {
                   if (onForfeit) {
-                    analytics.trackEvent('forfeit_game', {
-                      player: player.index,
-                    });
-                    metrics.trackEvent('forfeit_game', {
-                      player: player.index,
-                    });
                     onForfeit();
                     setShowPlayerMenu(false);
                   }
@@ -925,12 +856,6 @@ const PlayerMenu = ({
                   className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
                   onClick={() => {
                     if (onForfeit) {
-                      analytics.trackEvent('forfeit_game', {
-                        player: player.index,
-                      });
-                      metrics.trackEvent('forfeit_game', {
-                        player: player.index,
-                      });
                       onForfeit();
                       setShowPlayerMenu(false);
                       forfeitGameDialogRef.current?.close();

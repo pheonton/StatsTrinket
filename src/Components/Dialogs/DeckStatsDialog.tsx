@@ -1,7 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { Dialog } from './Dialog';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
-import { useAnalytics } from '../../Hooks/useAnalytics';
 import { DeckStat, deckWinRate } from '../../Types/DeckStats';
 import { deckStatsToCsv, parseDeckStatsCsv } from '../../Utils/deckStatsCsv';
 
@@ -27,7 +26,6 @@ export const DeckStatsDialog: React.FC<{
 }> = ({ dialogRef }) => {
   const { deckStats, clearDeckStats, deleteDeck, replaceDeckStats } =
     useGlobalSettings();
-  const analytics = useAnalytics();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const rows = useMemo(() => {
@@ -44,7 +42,6 @@ export const DeckStatsDialog: React.FC<{
   const handleClearAll = () => {
     if (confirm('Delete stats for every deck? This cannot be undone.')) {
       clearDeckStats();
-      analytics.trackEvent('deck_stats_cleared');
     }
   };
 

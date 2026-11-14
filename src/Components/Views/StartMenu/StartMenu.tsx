@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { twc } from 'react-twc';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
-import { useAnalytics } from '../../../Hooks/useAnalytics';
-import { useMetrics } from '../../../Hooks/useMetrics';
-import { useUserActions } from '../../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { restoreTimerSnapshot } from '../../../Hooks/useGameTimer';
@@ -50,13 +47,10 @@ const SliderWrapper = twc.div`mx-8 relative`;
 
 const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
 
-let tracked = false;
+let checkedForNewVersion = false;
 
 const Start = () => {
   const { setPlayers } = usePlayers();
-  const analytics = useAnalytics();
-  const metrics = useMetrics();
-  const userActions = useUserActions();
   const {
     fullscreen,
     wakeLock,
@@ -86,10 +80,10 @@ const Start = () => {
 
   // Check for new version on mount
   useEffect(() => {
-    if (!tracked) {
-      version.checkForNewVersion('start_menu');
+    if (!checkedForNewVersion) {
+      version.checkForNewVersion();
 
-      tracked = true;
+      checkedForNewVersion = true;
     }
   });
 
@@ -171,17 +165,7 @@ const Start = () => {
       return;
     }
 
-    analytics.trackEvent('game_started', {
-      ...initialGameSettings,
-      ...settings,
-      isPWA,
-    });
 
-    metrics.trackGameStarted(initialGameSettings.numberOfPlayers);
-    userActions.trackGameStartAction(
-      initialGameSettings.numberOfPlayers,
-      initialGameSettings.startingLifeTotal
-    );
 
     try {
       if (settings.goFullscreenOnStart) {
@@ -201,7 +185,7 @@ const Start = () => {
     setPlayers(createInitialPlayers(initialGameSettings));
     setShowPlay(true);
     setPlaying(false);
-    tracked = false;
+    checkedForNewVersion = false;
   };
 
   const doResumeGame = () => {
@@ -209,17 +193,7 @@ const Start = () => {
       return;
     }
 
-    analytics.trackEvent('game_resumed', {
-      ...initialGameSettings,
-      ...settings,
-      isPWA,
-    });
 
-    metrics.trackEvent('game_resumed', {
-      ...initialGameSettings,
-      ...settings,
-      isPWA,
-    });
 
     // Resuming continues the same game - keep whatever fullscreen state the
     // player is in. If they left fullscreen mid-game, don't force it back.
@@ -244,7 +218,7 @@ const Start = () => {
     saveCurrentGame(null);
     setShowPlay(true);
     setPlaying(true);
-    tracked = false;
+    checkedForNewVersion = false;
   };
 
   const openInfo = () => {
@@ -256,7 +230,7 @@ const Start = () => {
   const openSettings = () => {
     if (settingsDialogRef.current) {
       settingsDialogRef.current.showModal();
-      version.checkForNewVersion('settings');
+      version.checkForNewVersion();
     }
   };
 

@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import { twc } from 'react-twc';
-import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { InstallPWAButton } from '../Misc/InstallPWAButton';
@@ -35,17 +34,14 @@ export const SettingsDialog = ({
     savedGame,
   } = useGlobalSettings();
   const { players, startingPlayerIndex } = usePlayers();
-  const analytics = useAnalytics();
 
   const shareDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const handleShareGame = () => {
     try {
-      analytics.trackEvent('game_shared');
       shareDialogRef.current?.showModal();
     } catch (error) {
       console.error('Failed to open share dialog:', error);
-      analytics.trackEvent('game_share_failed');
     }
   };
 
@@ -66,11 +62,6 @@ export const SettingsDialog = ({
                 href={baseGithubReleasesUrl + version.installedVersion}
                 target="_blank"
                 className="underline"
-                onClick={() => {
-                  analytics.trackEvent(
-                    `current_change_log_clicked_v${version.installedVersion}`
-                  );
-                }}
               >
                 Release notes
               </a>
@@ -89,11 +80,6 @@ export const SettingsDialog = ({
                     href={baseGithubReleasesUrl + version.remoteVersion}
                     target="_blank"
                     className="underline"
-                    onClick={() => {
-                      analytics.trackEvent(
-                        `new_change_log_clicked_v${version.remoteVersion}`
-                      );
-                    }}
                   >
                     Release notes
                   </a>
@@ -102,15 +88,7 @@ export const SettingsDialog = ({
               </div>
               <button
                 className="flex justify-center items-center self-start mt-2 bg-primary-main px-3 py-1 rounded-md"
-                onClick={() => {
-                  {
-                    analytics.trackEvent(`pressed_update`, {
-                      toVersion: version.remoteVersion,
-                      fromVersion: version.installedVersion,
-                    });
-                    window?.location?.reload();
-                  }
-                }}
+                onClick={() => window.location.reload()}
               >
                 <span className="text-sm">Update</span>
                 <span className="text-xs">&nbsp;(reload app)</span>
@@ -304,7 +282,6 @@ export const SettingsDialog = ({
           <button
             className="mt-1 mb-1 bg-primary-main px-3 py-1 rounded-md duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold"
             onClick={() => {
-              analytics.trackEvent('settings_save_clicked');
               dialogRef.current?.close();
             }}
           >

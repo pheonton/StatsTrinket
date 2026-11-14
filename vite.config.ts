@@ -109,15 +109,6 @@ export default defineConfig({
     'import.meta.env.VITE_APP_VERSION': JSON.stringify(
       process.env.npm_package_version
     ),
-    VITE_REPO_READ_ACCESS_TOKEN: JSON.stringify(
-      process.env.VITE_REPO_READ_ACCESS_TOKEN
-    ),
-    VITE_GRAFANA_FARO_URL: JSON.stringify(
-      process.env.VITE_GRAFANA_FARO_URL
-    ),
-    VITE_GRAFANA_FARO_APP_NAME: JSON.stringify(
-      process.env.VITE_GRAFANA_FARO_APP_NAME
-    ),
   },
   test: {
     environment: 'node',

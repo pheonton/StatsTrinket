@@ -11,8 +11,6 @@ export { default as Experience } from './Experience';
 export { default as FullscreenOff } from './FullscreenOff';
 export { default as FullscreenOn } from './FullscreenOn';
 export { default as Info } from './Info';
-export { default as LittleGuy } from './LittleGuy';
-export { default as Logo } from './Logo';
 export { default as Monarch } from './Monarch';
 export { default as NameTag } from './NameTag';
 export { default as PartnerTax } from './PartnerTax';

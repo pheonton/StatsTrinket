@@ -7,7 +7,7 @@ import type { TimerSnapshot } from '../Hooks/useGameTimer';
 type Version = {
   installedVersion: string;
   isLatest: boolean;
-  checkForNewVersion: (source: 'settings' | 'start_menu') => Promise<void>;
+  checkForNewVersion: () => Promise<void>;
   remoteVersion?: string;
 };
 
@@ -61,15 +61,6 @@ export type GlobalSettingsContextType = {
   clearDeckStats: () => void;
   deleteDeck: (normalizedName: string) => void;
   replaceDeckStats: (stats: DeckStats) => void;
-  /** The id of the game this device publishes life totals to, or null. */
-  trackedGameId: string | null;
-  /**
-   * The id of the round clock this game follows, or null. It names a node
-   * this device only ever reads: the tournament owns the round end.
-   */
-  trackedRoundId: string | null;
-  /** Stops publishing. A game that has been reset is no longer that game. */
-  clearTrackedGame: () => void;
 };
 
 export const GlobalSettingsContext =

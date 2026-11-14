@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
-import { useAnalytics } from '../../Hooks/useAnalytics';
-import { useMetrics } from '../../Hooks/useMetrics';
-import { useUserActions } from '../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { recentDifferenceTTL } from '../../Data/constants';
@@ -142,8 +139,6 @@ const LifeCounter = ({
   const displayPlayer: Player = commanderArtUrl
     ? { ...player, iconTheme: 'light' }
     : player;
-  const metrics = useMetrics();
-  const userActions = useUserActions();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
     undefined
   );
@@ -178,16 +173,10 @@ const LifeCounter = ({
     trackMouse: true,
     onSwipedDown: (e) => {
       e.event.stopPropagation();
-      analytics.trackEvent('open_player_menu_swipe');
-      metrics.trackEvent('open_player_menu_swipe');
-      userActions.trackMenuInteraction('player_menu', 'open_swipe');
       setShowPlayerMenu(true);
     },
     onSwipedUp: (e) => {
       e.event.stopPropagation();
-      analytics.trackEvent('close_player_menu_swipe');
-      metrics.trackEvent('close_player_menu_swipe');
-      userActions.trackMenuInteraction('player_menu', 'close_swipe');
       setShowPlayerMenu(false);
     },
 
@@ -195,7 +184,6 @@ const LifeCounter = ({
     onSwiping: (e) => e.event.stopPropagation(),
     rotationAngle,
   });
-  const analytics = useAnalytics();
 
   useEffect(() => {
     // Only exit early if there's no difference AND no damage sources to track
@@ -212,27 +200,6 @@ const LifeCounter = ({
     }
 
     recentDifferenceTimerRef.current = setTimeout(() => {
-      // Track life gained and lost separately for better analytics insights
-      if (recentDifference > 0) {
-        // Start user action first to capture the measurement within its context
-        userActions.trackLifeChangeAction(recentDifference, player.index);
-
-        // Then push measurement and event (these will be associated with the user action)
-        analytics.trackEvent('life_gained', {
-          amount: recentDifference,
-        });
-        metrics.trackLifeGained(recentDifference);
-      } else if (recentDifference < 0) {
-        // Start user action first to capture the measurement within its context
-        userActions.trackLifeChangeAction(recentDifference, player.index);
-
-        // Then push measurement and event (these will be associated with the user action)
-        analytics.trackEvent('life_lost', {
-          amount: Math.abs(recentDifference),
-        });
-        metrics.trackLifeLost(Math.abs(recentDifference));
-      }
-
       // Record history after animation completes
       if (initialLifeTotalRef.current !== null) {
         const finalLifeTotal = player.lifeTotal;
@@ -420,9 +387,6 @@ const LifeCounter = ({
         {settings.showPlayerMenuCog && (
           <SettingsButton
             onClick={() => {
-              analytics.trackEvent('open_player_menu_button');
-              metrics.trackEvent('open_player_menu_button');
-              userActions.trackMenuInteraction('player_menu', 'open_button');
               setShowPlayerMenu(!showPlayerMenu);
             }}
             rotation={player.settings.rotation}

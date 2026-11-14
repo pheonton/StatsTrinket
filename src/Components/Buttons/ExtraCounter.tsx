@@ -1,14 +1,10 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
-import { useAnalytics } from '../../Hooks/useAnalytics';
-import { useMetrics } from '../../Hooks/useMetrics';
-import { useUserActions } from '../../Hooks/useUserActions';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
 import { MAX_TAP_MOVE_DISTANCE } from './CommanderDamage';
 
-const EXTRA_COUNTER_DEBOUNCE = 2_000;
 
 const ExtraCounterContainer = twc.div`
   flex
@@ -62,62 +58,17 @@ const ExtraCounter = ({
   isSide,
   playerIndex,
 }: ExtraCounterProps) => {
-  const analytics = useAnalytics();
-  const metrics = useMetrics();
-  const userActions = useUserActions();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const counterTrackingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
-  const [recentCounterChange, setRecentCounterChange] = useState(0);
   const downPositionRef = useRef({ x: 0, y: 0 });
-
-  // Track extra counter changes with debouncing
-  useEffect(() => {
-    if (recentCounterChange === 0) {
-      clearTimeout(counterTrackingTimerRef.current);
-      return;
-    }
-
-    counterTrackingTimerRef.current = setTimeout(() => {
-      if (recentCounterChange > 0) {
-        // Start user action first to capture measurements within its context
-        userActions.trackCounterChangeAction(type, recentCounterChange, playerIndex);
-
-        // Then push measurement and event (these will be associated with the user action)
-        analytics.trackEvent('extra_counter_increased', {
-          amount: recentCounterChange,
-          counterType: type,
-        });
-        metrics.trackExtraCounterChange(recentCounterChange, type, 'increased');
-      } else if (recentCounterChange < 0) {
-        // Start user action first to capture measurements within its context
-        userActions.trackCounterChangeAction(type, recentCounterChange, playerIndex);
-
-        // Then push measurement and event (these will be associated with the user action)
-        analytics.trackEvent('extra_counter_decreased', {
-          amount: Math.abs(recentCounterChange),
-          counterType: type,
-        });
-        metrics.trackExtraCounterChange(Math.abs(recentCounterChange), type, 'decreased');
-      }
-      setRecentCounterChange(0);
-    }, EXTRA_COUNTER_DEBOUNCE);
-
-    return () => {
-      clearTimeout(counterTrackingTimerRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recentCounterChange, type]);
 
   const handleCountChange = (increment: number) => {
     if (!counterTotal) {
       setCounterTotal(increment, type);
-      setRecentCounterChange(recentCounterChange + increment);
       return;
     }
     setCounterTotal(counterTotal + increment, type);
-    setRecentCounterChange(recentCounterChange + increment);
   };
 
   const handleDownInput = (event: React.PointerEvent<HTMLButtonElement>) => {

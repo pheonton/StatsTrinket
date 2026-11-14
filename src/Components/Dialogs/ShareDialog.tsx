@@ -1,7 +1,6 @@
 import { useState, useRef, useMemo } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Dialog } from './Dialog';
-import { useAnalytics } from '../../Hooks/useAnalytics';
 import { generateShareUrl, estimateEncodedSize } from '../../Utils/shareState';
 import type { Player, LifeHistoryEvent } from '../../Types/Player';
 import type { InitialGameSettings } from '../../Types/Settings';
@@ -24,7 +23,6 @@ export const ShareDialog: React.FC<{
   lifeHistory,
   version,
 }) => {
-  const analytics = useAnalytics();
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>(
     'idle'
   );
@@ -95,10 +93,6 @@ export const ShareDialog: React.FC<{
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopyStatus('copied');
-      analytics.trackEvent('share_link_copied', {
-        include_game_score: includeGameScore,
-        include_life_history: includeLifeHistory,
-      });
 
       // Reset status after 2 seconds
       setTimeout(() => {
@@ -113,7 +107,6 @@ export const ShareDialog: React.FC<{
         urlInputRef.current?.select();
         document.execCommand('copy');
         setCopyStatus('copied');
-        analytics.trackEvent('share_link_copied_fallback');
 
         setTimeout(() => {
           setCopyStatus('idle');

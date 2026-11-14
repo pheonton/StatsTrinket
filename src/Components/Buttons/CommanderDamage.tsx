@@ -1,9 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { TwcComponentProps, twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
-import { useAnalytics } from '../../Hooks/useAnalytics';
-import { useMetrics } from '../../Hooks/useMetrics';
-import { useUserActions } from '../../Hooks/useUserActions';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useCommanderArt } from '../../Hooks/useCommanderArt';
 import { Player, Rotation } from '../../Types/Player';
@@ -18,7 +15,6 @@ export type RotationButtonProps = TwcComponentProps<'button'> & {
 };
 
 export const MAX_TAP_MOVE_DISTANCE = 20;
-const COMMANDER_DAMAGE_DEBOUNCE = 2_000;
 
 const CommanderDamageContainer = twc.div<RotationDivProps>((props) => [
   'flex flex-grow',
@@ -74,43 +70,9 @@ export const CommanderDamage = ({
   handleLifeChange,
 }: CommanderDamageButtonComponentProps) => {
   const { updatePlayer } = usePlayers();
-  const analytics = useAnalytics();
-  const metrics = useMetrics();
-  const userActions = useUserActions();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const damageTrackingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [downLongPressed, setDownLongPressed] = useState(false);
-  const [recentDamageChange, setRecentDamageChange] = useState(0);
   const downPositionRef = useRef({ x: 0, y: 0 });
-
-  // Track commander damage changes with debouncing
-  useEffect(() => {
-    if (recentDamageChange === 0) {
-      clearTimeout(damageTrackingTimerRef.current);
-      return;
-    }
-
-    damageTrackingTimerRef.current = setTimeout(() => {
-      if (recentDamageChange > 0) {
-        // User action is started when damage is dealt (in handleCommanderDamageChange)
-        analytics.trackEvent('commander_damage_increased', {
-          amount: recentDamageChange,
-        });
-        metrics.trackCommanderDamage(recentDamageChange);
-      } else if (recentDamageChange < 0) {
-        analytics.trackEvent('commander_damage_decreased', {
-          amount: Math.abs(recentDamageChange),
-        });
-        // We don't track negative commander damage in metrics (damage removed is not a metric we want)
-      }
-      setRecentDamageChange(0);
-    }, COMMANDER_DAMAGE_DEBOUNCE);
-
-    return () => {
-      clearTimeout(damageTrackingTimerRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recentDamageChange]);
 
   const handleCommanderDamageChange = (
     index: number,
@@ -118,16 +80,6 @@ export const CommanderDamage = ({
     isPartner: boolean
   ) => {
     const currentCommanderDamage = player.commanderDamage[index];
-
-    // Start user action FIRST if this is damage being dealt (positive increment)
-    if (increment > 0) {
-      userActions.trackCommanderDamageAction(
-        increment,
-        index,
-        player.index,
-        isPartner
-      );
-    }
 
     // Create commander damage context for history tracking
     const commanderDamageContext = {
@@ -151,7 +103,6 @@ export const CommanderDamage = ({
       };
       updatePlayer(updatedPlayer);
       handleLifeChange(player.lifeTotal - increment, commanderDamageContext);
-      setRecentDamageChange(recentDamageChange + increment);
       return;
     }
     if (currentCommanderDamage.damageTotal === 0 && increment === -1) {
@@ -167,7 +118,6 @@ export const CommanderDamage = ({
     };
     updatePlayer(updatedPlayer);
     handleLifeChange(player.lifeTotal - increment, commanderDamageContext);
-    setRecentDamageChange(recentDamageChange + increment);
   };
 
   const handleDownInput = ({ opponentIndex, isPartner, event }: InputProps) => {

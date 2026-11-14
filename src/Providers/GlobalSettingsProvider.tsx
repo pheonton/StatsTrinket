@@ -6,8 +6,6 @@ import {
   GlobalSettingsContextType,
   SavedGame,
 } from '../Contexts/GlobalSettingsContext';
-import { useAnalytics } from '../Hooks/useAnalytics';
-import { useMetrics } from '../Hooks/useMetrics';
 import {
   InitialGameSettings,
   Settings,
@@ -25,21 +23,15 @@ import {
 } from '../Types/DeckStats';
 import { gte as semverGreaterThanOrEqual } from 'semver';
 import type { SharedGameState } from '../Types/SharedState';
-import type { TrackLink } from '../Types/Tracking';
-import { clearStoredTrackLink } from '../Utils/tracking/trackLink';
 import { clearKeys, keysToClearOnGoToStart } from '../Utils/storageScope';
 
 export const GlobalSettingsProvider = ({
   children,
   sharedState,
-  trackLink,
 }: {
   children: ReactNode;
   sharedState?: SharedGameState | null;
-  trackLink?: TrackLink | null;
 }) => {
-  const analytics = useAnalytics();
-  const metrics = useMetrics();
 
   const localSavedGame = localStorage.getItem('savedGame');
   const [savedGame, setCurrentGame] = useState<SavedGame>(
@@ -57,8 +49,8 @@ export const GlobalSettingsProvider = ({
 
   const savedPlaying = localStorage.getItem('playing');
   const [playing, setPlaying] = useState<boolean>(() => {
-    // Shared state and a track link both auto-start the game
-    if (sharedState || trackLink) {
+    // A shared game starts straight away
+    if (sharedState) {
       return true;
     }
     return savedPlaying ? savedPlaying === 'true' : false;
@@ -70,8 +62,8 @@ export const GlobalSettingsProvider = ({
 
   const savedShowPlay = localStorage.getItem('showPlay');
   const [showPlay, setShowPlay] = useState<boolean>(() => {
-    // Shared state and a track link both open the play view
-    if (sharedState || trackLink) {
+    // A shared game opens the play view
+    if (sharedState) {
       return true;
     }
     return savedShowPlay ? savedShowPlay === 'true' : false;
@@ -138,12 +130,6 @@ export const GlobalSettingsProvider = ({
     setGameScore(score);
     localStorage.setItem('gameScore', JSON.stringify(score));
   };
-
-  // Nothing here resets the score for a new tracked game. `main.tsx` clears
-  // every game-scoped key before React renders (see Utils/storageScope), so
-  // the lazy state above already reads an empty score, an empty transcript
-  // and a stopped timer -- one path for all of them, rather than one field
-  // remembered here and the rest forgotten.
 
   const savedLifeHistory = localStorage.getItem('lifeHistory');
   const [lifeHistory, setLifeHistory] = useState<LifeHistoryEvent[]>(() => {
@@ -217,27 +203,6 @@ export const GlobalSettingsProvider = ({
     });
   }, []);
 
-  // Held in state, not read from the link on every render, so that ending
-  // the tracked game stops the publishing without a reload.
-  const [trackedGameId, setTrackedGameId] = useState<string | null>(
-    trackLink?.id ?? null
-  );
-  // The round clock this game follows, from the same link and held the same
-  // way. Absent from every link minted before the round-end feature, and
-  // absent from every link for a tournament whose organizer never starts a
-  // clock, which is why it is read as an optional field and never required.
-  const [trackedRoundId, setTrackedRoundId] = useState<string | null>(
-    trackLink?.r ?? null
-  );
-  const clearTrackedGame = useCallback(() => {
-    clearStoredTrackLink();
-    setTrackedGameId(null);
-    // The link is gone, so the round it named is gone with it. Leaving the
-    // subscription up would keep a tournament's clock on the screen of a
-    // kitchen-table game started afterwards.
-    setTrackedRoundId(null);
-  }, []);
-
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
@@ -266,35 +231,22 @@ export const GlobalSettingsProvider = ({
     request();
   }
 
-  // Track when a game is loaded from shared state
+  // Persist the life history of a game loaded from a share link
   useEffect(() => {
-    if (sharedState) {
-      analytics.trackEvent('game_loaded_from_share', {
-        shared_version: sharedState.version,
-        player_count: sharedState.players.length,
-        has_game_score: !!sharedState.gameScore,
-        has_life_history:
-          !!sharedState.lifeHistory && sharedState.lifeHistory.length > 0,
-        life_history_events: sharedState.lifeHistory?.length || 0,
-      });
-
-      // Persist shared life history to localStorage
-      if (sharedState.lifeHistory && sharedState.lifeHistory.length > 0) {
-        localStorage.setItem(
-          'lifeHistory',
-          JSON.stringify(sharedState.lifeHistory)
-        );
-      }
+    if (sharedState?.lifeHistory && sharedState.lifeHistory.length > 0) {
+      localStorage.setItem(
+        'lifeHistory',
+        JSON.stringify(sharedState.lifeHistory)
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run once on mount - sharedState and analytics are stable
+  }, []); // Only run once on mount
 
   const ctxValue = useMemo((): GlobalSettingsContextType => {
     const removeLocalStorage = async () => {
       // The list lives in Utils/storageScope, next to the game-scoped keys it
       // is derived from, so this path and a new game cannot drift apart.
       clearKeys(keysToClearOnGoToStart());
-      clearTrackedGame();
 
       setPlaying(false);
       setShowPlay(false);
@@ -302,20 +254,7 @@ export const GlobalSettingsProvider = ({
       setGameScore({});
     };
 
-    const goToStart = async () => {
-      const currentPlayers = localStorage.getItem('players');
-
-      if (currentPlayers) {
-        analytics.trackEvent('go_to_start', {
-          playersBeforeReset: currentPlayers,
-        });
-        metrics.trackEvent('go_to_start', {
-          playersBeforeReset: currentPlayers,
-        });
-      }
-
-      await removeLocalStorage();
-    };
+    const goToStart = removeLocalStorage;
 
     const toggleWakeLock = async () => {
       if (active) {
@@ -344,22 +283,18 @@ export const GlobalSettingsProvider = ({
       }
     };
 
-    async function checkForNewVersion(source: 'settings' | 'start_menu') {
+    async function checkForNewVersion() {
       try {
-        const token = import.meta.env.VITE_REPO_READ_ACCESS_TOKEN;
-        const headers: HeadersInit = {
-          Accept: 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-        };
-
-        // Only add authorization if token is available
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
+        // Unauthenticated on purpose: anything built into the app is public,
+        // and GitHub's 60 requests/hour per address is plenty for this check.
         const result = await fetch(
           'https://api.github.com/repos/pheonton/StatsTrinket/releases/latest',
-          { headers }
+          {
+            headers: {
+              Accept: 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+            },
+          }
         );
         const data = await result.json();
         // The tag is always the bare version; the release title is free text.
@@ -384,16 +319,6 @@ export const GlobalSettingsProvider = ({
           setIsLatestVersion(true);
           return;
         }
-
-        analytics.trackEvent(`${source}_has_new_version`, {
-          remoteVersion: latestVersion,
-          installedVersion: import.meta.env.VITE_APP_VERSION,
-        });
-
-        metrics.trackEvent(`${source}_has_new_version`, {
-          remoteVersion: latestVersion,
-          installedVersion: import.meta.env.VITE_APP_VERSION,
-        });
 
         setIsLatestVersion(false);
       } catch (error) {
@@ -439,9 +364,6 @@ export const GlobalSettingsProvider = ({
       clearDeckStats,
       deleteDeck,
       replaceDeckStats: persistDeckStats,
-      trackedGameId,
-      trackedRoundId,
-      clearTrackedGame,
     };
   }, [
     isFullscreen,
@@ -457,8 +379,6 @@ export const GlobalSettingsProvider = ({
     savedGame,
     remoteVersion,
     isLatestVersion,
-    analytics,
-    metrics,
     gameScore,
     lifeHistory,
     addLifeHistoryEvent,
@@ -468,9 +388,6 @@ export const GlobalSettingsProvider = ({
     clearDeckStats,
     deleteDeck,
     persistDeckStats,
-    trackedGameId,
-    trackedRoundId,
-    clearTrackedGame,
   ]);
 
   return (

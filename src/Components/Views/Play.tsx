@@ -6,8 +6,6 @@ import { Orientation } from '../../Types/Settings';
 import { GameTimer } from '../GameTimer/GameTimer';
 import { Players } from '../Players/Players';
 import { GameOver } from '../GameOver/GameOver';
-import { useGameTracker } from '../../Hooks/useGameTracker';
-import { TrackingContext } from '../../Contexts/TrackingContext';
 
 const MainWrapper = twc.div`relative w-[100dvmax] h-[100dvmin] overflow-hidden, setPlayers`;
 
@@ -40,7 +38,6 @@ export const Play = () => {
     gameScore,
     setGameScore,
     recordGame,
-    trackedGameId,
     goToStart,
   } = useGlobalSettings();
   const [winner, setWinner] = useState<number | null>(null);
@@ -60,21 +57,6 @@ export const Play = () => {
     (sum, wins) => sum + wins,
     0
   );
-
-  // Idle and inert unless a track link started this game.
-  const tracker = useGameTracker({
-    gameId: trackedGameId,
-    players,
-    winner,
-    gameScore,
-    // Spec 17: a device opening the link for a match already in progress has
-    // nothing of its own, and must take what the node carries rather than
-    // publish 0-0 and 20-20 over a real tournament match. Both setters are
-    // required by the hook: there is no useful way to let it read the node
-    // and then have nowhere to put the answer.
-    onAdoptScore: setGameScore,
-    onAdoptPlayers: setPlayers,
-  });
 
   let gridLayout: GridLayout;
   switch (players.length) {
@@ -204,35 +186,21 @@ export const Play = () => {
 
   return (
     <MainWrapper>
-      {/* The player menu shows the tracking status, and it sits three
-          components below this one. Context rather than three layers of
-          props for a readout that most games never have. */}
-      <TrackingContext.Provider
-        value={{
-          status: tracker.status,
-          lastSentAt: tracker.lastSentAt,
-          forceUpdate: tracker.forceUpdate,
-        }}
-      >
-        <Players
-          gridLayout={gridLayout}
-          finishGame={
-            dismissedWinner === null
-              ? undefined
-              : {
-                  playerIndex: dismissedWinner,
-                  onFinish: () => {
-                    setWinner(dismissedWinner);
-                    setDismissedWinner(null);
-                  },
-                }
-          }
-        />
-      </TrackingContext.Provider>
+      <Players
+        gridLayout={gridLayout}
+        finishGame={
+          dismissedWinner === null
+            ? undefined
+            : {
+                playerIndex: dismissedWinner,
+                onFinish: () => {
+                  setWinner(dismissedWinner);
+                  setDismissedWinner(null);
+                },
+              }
+        }
+      />
 
-      {/* Mounted whatever `showTimer` says: a tracked round end overrides
-          that preference, and only the component knows whether it has one.
-          It renders nothing at all otherwise. */}
       <GameTimer />
 
       {winner !== null && (

@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { BeforeInstallPromptEvent } from '../../global';
-import { useAnalytics } from '../../Hooks/useAnalytics';
 
 export const InstallPWAButton = () => {
   const [promptInstall, setPromptInstall] =
     useState<BeforeInstallPromptEvent | null>(null);
 
-  const analytics = useAnalytics();
 
   const handler = (e: BeforeInstallPromptEvent) => {
     e.preventDefault();
@@ -33,7 +31,6 @@ export const InstallPWAButton = () => {
         if (!promptInstall) {
           return;
         }
-        analytics.trackEvent('install_pwa_prompt_shown');
         promptInstall.prompt();
       }}
     >

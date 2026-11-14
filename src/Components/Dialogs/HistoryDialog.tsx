@@ -1,14 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Dialog } from './Dialog';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
-import { useAnalytics } from '../../Hooks/useAnalytics';
 import { LifeHistoryEvent } from '../../Types/Player';
 
 export const HistoryDialog: React.FC<{
   dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 }> = ({ dialogRef }) => {
   const { lifeHistory, clearLifeHistory } = useGlobalSettings();
-  const analytics = useAnalytics();
   const [now, setNow] = useState(() => Date.now());
 
   // Update timestamp every 10 seconds for relative time display
@@ -22,7 +20,6 @@ export const HistoryDialog: React.FC<{
   const handleClearHistory = () => {
     if (confirm('Are you sure you want to clear all life history?')) {
       clearLifeHistory();
-      analytics.trackEvent('life_history_cleared');
       dialogRef.current?.close();
     }
   };
