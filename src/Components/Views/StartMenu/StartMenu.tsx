@@ -39,9 +39,12 @@ const standardSettings: Pick<
   orientation: Orientation.Landscape,
 };
 
-const MainWrapper = twc.div`h-fit w-full pb-24 overflow-hidden items-center flex flex-col min-[349px]:pb-10`;
+const MainWrapper = twc.div`h-fit w-full overflow-hidden items-center flex flex-col`;
 
-const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-row flex-wrap px-4 z-10 gap-4`;
+const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 flex flex-col px-4 z-10 gap-3`;
+
+const startButtonClass =
+  'flex w-full justify-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold';
 
 const SliderWrapper = twc.div`mx-8 relative`;
 
@@ -268,7 +271,8 @@ const Start = () => {
       <SettingsDialog dialogRef={settingsDialogRef} />
       <DeckStatsDialog dialogRef={deckStatsDialogRef} />
       <div className="flex justify-center items-center w-screen">
-        <MainWrapper>
+        {/* Room for the fixed footer, which stacks Resume above New Game. */}
+        <MainWrapper className={savedGame ? 'pb-36' : 'pb-16'}>
           <Info
             className="size-8 absolute top-7 left-4 text-primary-main"
             onClick={() => {
@@ -440,20 +444,8 @@ const Start = () => {
           </div>
 
           <StartButtonFooter>
-            <button
-              className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold"
-              onClick={doStartNewGame}
-            >
-              NEW GAME
-            </button>
-
             {savedGame && (
-              <button
-                className="flex flex-grow basis-0 justify-center self-center items-center bg-secondary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]
-
-              duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark font-bold"
-                onClick={doResumeGame}
-              >
+              <button className={startButtonClass} onClick={doResumeGame}>
                 <div className="flex flex-col items-center">
                   <div>
                     RESUME&nbsp;
@@ -479,6 +471,9 @@ const Start = () => {
                 </div>
               </button>
             )}
+            <button className={startButtonClass} onClick={doStartNewGame}>
+              NEW GAME
+            </button>
           </StartButtonFooter>
         </MainWrapper>
       </div>
