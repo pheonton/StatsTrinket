@@ -17,7 +17,6 @@ export type Settings = {
   showStartingPlayer: boolean;
   showPlayerMenuCog: boolean;
   goFullscreenOnStart: boolean;
-  showAnimations: boolean;
   useMonarch: boolean;
   showMatchScore: boolean;
   showTimer: boolean;
@@ -53,7 +52,6 @@ export const settingsSchema = z.object({
   showStartingPlayer: z.boolean(),
   showPlayerMenuCog: z.boolean(),
   goFullscreenOnStart: z.boolean(),
-  showAnimations: z.boolean(),
   useMonarch: z.boolean().default(false),
   showMatchScore: z.boolean().default(true),
   showTimer: z.boolean().default(false),
@@ -65,7 +63,6 @@ export const defaultSettings: Settings = {
   keepAwake: true,
   showStartingPlayer: true,
   showPlayerMenuCog: true,
-  showAnimations: true,
   useMonarch: false,
   showMatchScore: true,
   showTimer: false,

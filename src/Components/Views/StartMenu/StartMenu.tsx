@@ -256,12 +256,6 @@ const Start = () => {
   return (
     <>
       <InfoDialog dialogRef={infoDialogRef} />
-      {settings.showAnimations && (
-        <>
-          <div className="spotlight1" />
-          <div className="spotlight2" />
-        </>
-      )}
 
       <SettingsDialog dialogRef={settingsDialogRef} />
       <DeckStatsDialog dialogRef={deckStatsDialogRef} />

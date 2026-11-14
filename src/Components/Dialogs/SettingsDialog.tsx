@@ -237,26 +237,6 @@ export const SettingsDialog = ({
 
         <SettingContainer>
           <ToggleContainer>
-            <label>Show animations</label>
-            <ToggleButton
-              checked={settings.showAnimations}
-              onChange={() => {
-                setSettings({
-                  ...settings,
-                  showAnimations: !settings.showAnimations,
-                });
-              }}
-            />
-          </ToggleContainer>
-          <Description>
-            Disables the following animation:
-            <ul className="pl-1 list-inside">
-              <li className="list-disc">Glow effect on start menu</li>
-            </ul>
-          </Description>
-        </SettingContainer>
-        <SettingContainer>
-          <ToggleContainer>
             <label>Show Match Score</label>
             <ToggleButton
               checked={settings.showMatchScore}
