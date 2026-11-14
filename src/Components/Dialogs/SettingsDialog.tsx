@@ -53,7 +53,7 @@ export const SettingsDialog = ({
 
   return (
     <>
-      <Dialog id="settings" title="⚙️ Settings ⚙️" dialogRef={dialogRef}>
+      <Dialog id="settings" title="Settings" dialogRef={dialogRef}>
         <div className="flex flex-col mb-2 w-full">
           <div className="text-text-primary flex items-center gap-2">
             Current version: {version.installedVersion}{' '}

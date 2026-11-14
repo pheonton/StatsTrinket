@@ -65,7 +65,7 @@ export const InfoDialog = ({
       </div>
       <div className="text-text-primary mt-4">
         <div className="text">
-          <h2 className="text-xl">📋 Usage Guide</h2>
+          <h2 className="text-xl">Usage Guide</h2>
           <Separator height="1px" />
         </div>
         <div className="text-text-primary">

@@ -181,7 +181,7 @@ export const ShareDialog: React.FC<{
             )}
             {dataSize > 2000 && !isTooLarge && (
               <p className="text-xs text-yellow-500 text-center px-4">
-                ⚠️ Large QR code - uncheck options below to reduce size
+                Large QR code - uncheck options below to reduce size
               </p>
             )}
             {isTooLarge && (
@@ -290,7 +290,7 @@ export const ShareDialog: React.FC<{
         {isTooLarge ? (
           <div className="bg-background-paper p-4 rounded-lg border border-divider">
             <p className="text-sm text-text-primary font-medium mb-2">
-              💡 Data Too Large for QR Code
+              Data Too Large for QR Code
             </p>
             <p className="text-sm text-text-secondary mb-2">
               Your game has too much data for a QR code
