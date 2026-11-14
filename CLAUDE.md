@@ -459,7 +459,7 @@ Cloudflare Pages either way, the two are unrelated. See
 
 The app checks for updates via GitHub API:
 - Installed version from `package.json` via `import.meta.env.VITE_APP_VERSION`
-- Remote version fetched from the latest GitHub Release of `pheonton/StatsTrinket` (see `checkForNewVersion` in `src/Providers/GlobalSettingsProvider.tsx`); if there is no release, the app treats itself as current
+- Remote version is the tag (not the title) of the latest GitHub Release of `pheonton/StatsTrinket` (see `checkForNewVersion` in `src/Providers/GlobalSettingsProvider.tsx`); if there is no release, the app treats itself as current
 - Comparison uses `semver` library
 - Update notification shown in UI if newer version available
 

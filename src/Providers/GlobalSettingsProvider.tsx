@@ -362,8 +362,10 @@ export const GlobalSettingsProvider = ({
           { headers }
         );
         const data = await result.json();
+        // The tag is always the bare version; the release title is free text.
+        const latestVersion: string | undefined = data.tag_name;
 
-        if (!data.name) {
+        if (!latestVersion) {
           // No published release to compare against (e.g. a fresh fork).
           // Treat the installed build as current rather than nagging.
           setRemoteVersion(undefined);
@@ -371,11 +373,11 @@ export const GlobalSettingsProvider = ({
           return;
         }
 
-        setRemoteVersion(data.name);
+        setRemoteVersion(latestVersion);
 
         const isLatest = semverGreaterThanOrEqual(
           import.meta.env.VITE_APP_VERSION,
-          data.name
+          latestVersion
         );
 
         if (isLatest) {
@@ -384,12 +386,12 @@ export const GlobalSettingsProvider = ({
         }
 
         analytics.trackEvent(`${source}_has_new_version`, {
-          remoteVersion: data.name,
+          remoteVersion: latestVersion,
           installedVersion: import.meta.env.VITE_APP_VERSION,
         });
 
         metrics.trackEvent(`${source}_has_new_version`, {
-          remoteVersion: data.name,
+          remoteVersion: latestVersion,
           installedVersion: import.meta.env.VITE_APP_VERSION,
         });
 
