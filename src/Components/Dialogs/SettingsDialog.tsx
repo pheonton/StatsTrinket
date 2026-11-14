@@ -140,24 +140,6 @@ export const SettingsDialog = ({
 
         <SettingContainer>
           <ToggleContainer>
-            <label>Show Player Menu Cog</label>
-            <ToggleButton
-              checked={settings.showPlayerMenuCog}
-              onChange={() => {
-                setSettings({
-                  ...settings,
-                  showPlayerMenuCog: !settings.showPlayerMenuCog,
-                });
-              }}
-            />
-          </ToggleContainer>
-          <Description>
-            A cog on the top right of each player's card will be shown if this
-            is enabled.
-          </Description>
-        </SettingContainer>
-        <SettingContainer>
-          <ToggleContainer>
             <label>Show Start Player</label>
             <ToggleButton
               checked={settings.showStartingPlayer}

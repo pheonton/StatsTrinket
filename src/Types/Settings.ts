@@ -15,7 +15,6 @@ export enum GameFormat {
 export type Settings = {
   keepAwake: boolean;
   showStartingPlayer: boolean;
-  showPlayerMenuCog: boolean;
   goFullscreenOnStart: boolean;
   useMonarch: boolean;
   showMatchScore: boolean;
@@ -50,7 +49,6 @@ export const defaultInitialGameSettings = {
 export const settingsSchema = z.object({
   keepAwake: z.boolean(),
   showStartingPlayer: z.boolean(),
-  showPlayerMenuCog: z.boolean(),
   goFullscreenOnStart: z.boolean(),
   useMonarch: z.boolean().default(false),
   showMatchScore: z.boolean().default(true),
@@ -62,7 +60,6 @@ export const defaultSettings: Settings = {
   goFullscreenOnStart: true,
   keepAwake: true,
   showStartingPlayer: true,
-  showPlayerMenuCog: true,
   useMonarch: false,
   showMatchScore: true,
   showTimer: false,

@@ -163,7 +163,7 @@ App
 │               │       ├── Health (life total + ±buttons)
 │               │       ├── CommanderDamageBar
 │               │       ├── ExtraCountersBar
-│               │       ├── PlayerMenu (swipe-to-open)
+│               │       ├── PlayerMenu (opened with the card's cog)
 │               │       └── LoseGameButton / FinishGameButton (conditional)
 │               ├── GameTimer
 │               └── GameOver (when winner determined)
@@ -200,7 +200,7 @@ Implementation uses custom touch event handlers with:
 - **Long Press**: Decrement counter
 
 ### Player Menu
-Uses `react-swipeable` for swipe-to-open drawer on each player card. Accessible via swipe gesture or dedicated button.
+Opened with the cog on each player card (always shown). There is no swipe gesture.
 
 ## Color & Contrast Handling
 

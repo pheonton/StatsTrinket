@@ -36,7 +36,7 @@ by Viktor Raadberg and is developed independently.
 
 - **Tap** + or - for 1 life, **long press** for 10. Tap a counter to add 1,
   long press to subtract 1.
-- **Swipe down** on a card or tap its cog for the **player menu**: colour,
+- Tap the **cog** on a card for the **player menu**: colour,
   commander, deck, name, counters, life history, reset, forfeit, and the exit
   button, which pauses the game for **Resume** on the start menu.
 - At 0 life, 21 commander damage from one commander or 10 poison, a red skull

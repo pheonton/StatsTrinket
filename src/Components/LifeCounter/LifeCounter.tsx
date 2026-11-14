@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
@@ -146,7 +145,6 @@ const LifeCounter = ({
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
   const [differenceKey, setDifferenceKey] = useState(Date.now());
-  const [isLandscape, setIsLandscape] = useState(false);
 
   // Track initial state for history batching
   const initialLifeTotalRef = useRef<number | null>(null);
@@ -162,28 +160,6 @@ const LifeCounter = ({
       }
     >
   >(new Map());
-
-  const calcRot = player.isSide
-    ? player.settings.rotation - 180
-    : player.settings.rotation;
-
-  const rotationAngle = isLandscape ? calcRot : calcRot + 90;
-
-  const handlers = useSwipeable({
-    trackMouse: true,
-    onSwipedDown: (e) => {
-      e.event.stopPropagation();
-      setShowPlayerMenu(true);
-    },
-    onSwipedUp: (e) => {
-      e.event.stopPropagation();
-      setShowPlayerMenu(false);
-    },
-
-    swipeDuration: 500,
-    onSwiping: (e) => e.event.stopPropagation(),
-    rotationAngle,
-  });
 
   useEffect(() => {
     // Only exit early if there's no difference AND no damage sources to track
@@ -228,21 +204,6 @@ const LifeCounter = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recentDifference]);
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(() => {
-      if (document.body.clientWidth > document.body.clientHeight)
-        setIsLandscape(true);
-      else setIsLandscape(false);
-      return () => {
-        // Cleanup: disconnect the ResizeObserver when the component unmounts.
-        resizeObserver.disconnect();
-      };
-    });
-
-    resizeObserver.observe(document.body);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [document.body.clientHeight, document.body.clientWidth]);
 
   const handleLifeChange = (
     updatedLifeTotal: number,
@@ -298,7 +259,6 @@ const LifeCounter = ({
       <LifeCounterWrapper
         $rotation={player.settings.rotation}
         style={{ rotate: `${calcRotation}deg` }}
-        {...handlers}
       >
         {commanderArtUrl && (
           <div
@@ -384,15 +344,13 @@ const LifeCounter = ({
             </span>
           </MatchScoreBadge>
         )}
-        {settings.showPlayerMenuCog && (
-          <SettingsButton
-            onClick={() => {
-              setShowPlayerMenu(!showPlayerMenu);
-            }}
-            rotation={player.settings.rotation}
-            iconTheme={displayPlayer.iconTheme}
-          />
-        )}
+        <SettingsButton
+          onClick={() => {
+            setShowPlayerMenu(!showPlayerMenu);
+          }}
+          rotation={player.settings.rotation}
+          iconTheme={displayPlayer.iconTheme}
+        />
         {onFinishGame ? (
           <FinishGameButton
             rotation={player.settings.rotation}
